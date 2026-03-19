@@ -1466,6 +1466,47 @@
   </div>
 </div>
 
+<!-- Edit Player -->
+<div class="modal-overlay" id="modal-edit-player">
+  <div class="modal">
+    <h3>Edit Player</h3>
+    <input type="hidden" id="edit-player-id">
+    <div class="input-row">
+      <div class="input-group" style="margin:0">
+        <label>Jersey #</label>
+        <input type="number" id="edit-player-num" placeholder="1" min="1" max="99">
+      </div>
+      <div class="input-group" style="margin:0">
+        <label>Position</label>
+        <select id="edit-player-pos">
+          <option>Prop</option>
+          <option>Hooker</option>
+          <option>Lock</option>
+          <option>Flanker</option>
+          <option>Number 8</option>
+          <option>Scrum-half</option>
+          <option>Fly-half</option>
+          <option>Centre</option>
+          <option>Wing</option>
+          <option>Fullback</option>
+        </select>
+      </div>
+    </div>
+    <div class="input-group">
+      <label>First Name</label>
+      <input type="text" id="edit-player-first">
+    </div>
+    <div class="input-group">
+      <label>Last Name</label>
+      <input type="text" id="edit-player-last">
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('modal-edit-player')">Cancel</button>
+      <button class="btn" onclick="saveEditPlayer()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <!-- New Match -->
 <div class="modal-overlay" id="modal-new-match">
   <div class="modal">
@@ -1633,6 +1674,33 @@ function deletePlayer(id) {
   saveState();
   renderRoster();
 }
+function openEditPlayer(id) {
+  const p = state.players.find(p => p.id === id);
+  if (!p) return;
+  document.getElementById('edit-player-id').value = id;
+  document.getElementById('edit-player-num').value = p.num !== '—' ? p.num : '';
+  document.getElementById('edit-player-first').value = p.first;
+  document.getElementById('edit-player-last').value = p.last;
+  const posSelect = document.getElementById('edit-player-pos');
+  for (let opt of posSelect.options) opt.selected = opt.value === p.pos;
+  openModal('modal-edit-player');
+}
+function saveEditPlayer() {
+  const id = parseInt(document.getElementById('edit-player-id').value);
+  const p = state.players.find(p => p.id === id);
+  if (!p) return;
+  const first = document.getElementById('edit-player-first').value.trim();
+  const last  = document.getElementById('edit-player-last').value.trim();
+  if (!first || !last) return alert('Please enter a name.');
+  p.num   = document.getElementById('edit-player-num').value || '—';
+  p.first = first;
+  p.last  = last;
+  p.pos   = document.getElementById('edit-player-pos').value;
+  state.players.sort((a,b) => (parseInt(a.num)||99) - (parseInt(b.num)||99));
+  saveState();
+  closeModal('modal-edit-player');
+  renderRoster();
+}
 function renderRoster() {
   const el = document.getElementById('roster-list');
   if (!state.players.length) {
@@ -1647,6 +1715,7 @@ function renderRoster() {
         <div class="player-pos">${p.pos}</div>
       </div>
       <div class="player-actions">
+        <button class="btn icon-btn" onclick="openEditPlayer(${p.id})" title="Edit">✎</button>
         <button class="btn icon-btn" onclick="deletePlayer(${p.id})">✕</button>
       </div>
     </div>
