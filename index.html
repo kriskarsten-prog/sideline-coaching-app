@@ -936,42 +936,6 @@
   }
 
   .scroll-hint { height: 40px; }
-
-  /* QUICK LOG */
-  .ql-btn { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:8px 4px; text-align:center; cursor:pointer; transition:all .12s; display:flex; flex-direction:column; align-items:center; gap:2px; }
-  .ql-btn:active { transform:scale(0.95); }
-  .ql-btn-label { font-family:var(--font-display); font-size:10px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text2); line-height:1.2; }
-  .ql-btn-count { font-family:var(--font-display); font-size:20px; font-weight:900; line-height:1; color:var(--accent); }
-  .ql-btn.scoring { border-color:rgba(0,230,118,0.4); background:rgba(0,230,118,0.06); }
-  .ql-btn.danger  { border-color:rgba(255,59,48,0.4);  background:rgba(255,59,48,0.06); }
-  .ql-btn.danger  .ql-btn-count { color:var(--red); }
-  .ql-btn.neutral .ql-btn-count { color:var(--text2); }
-
-  /* EVENT LOG */
-  .ev-item { display:flex; align-items:flex-start; gap:8px; padding:8px 0; border-bottom:1px solid var(--border); }
-  .ev-item:last-child { border-bottom:none; }
-  .ev-min { font-family:var(--font-display); font-size:13px; font-weight:700; color:var(--text3); width:28px; flex-shrink:0; padding-top:2px; }
-  .ev-tag { font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; padding:3px 8px; border-radius:4px; flex-shrink:0; white-space:nowrap; }
-  .ev-body { flex:1; min-width:0; }
-  .ev-main { font-size:14px; font-weight:500; }
-  .ev-detail-text { font-size:12px; color:var(--text2); margin-top:2px; line-height:1.4; }
-  .ev-detail-btn { font-family:var(--font-display); font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text3); border:1px solid var(--border); border-radius:3px; padding:2px 6px; background:none; cursor:pointer; flex-shrink:0; white-space:nowrap; transition:color .12s,border-color .12s; }
-  .ev-detail-btn.has-detail { color:var(--accent); border-color:rgba(0,230,118,0.3); }
-  .ev-del-btn { background:none; border:none; color:var(--text3); font-size:16px; cursor:pointer; padding:0 2px; flex-shrink:0; line-height:1; }
-  .ev-del-btn:hover { color:var(--red); }
-  .detail-drawer { background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); padding:10px; margin-top:6px; }
-  .detail-drawer .input-group { margin-bottom:8px; }
-  .outcome-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:5px; margin-top:4px; }
-  .outcome-btn { padding:7px 6px; background:var(--surface); border:1px solid var(--border); border-radius:6px; font-family:var(--font-display); font-size:11px; font-weight:700; letter-spacing:0.5px; text-transform:uppercase; color:var(--text2); cursor:pointer; text-align:center; transition:all .12s; }
-  .outcome-btn.selected { border-color:var(--accent); color:var(--accent); background:rgba(0,230,118,0.08); }
-  .pitch-mini { width:100%; cursor:crosshair; display:block; border-radius:4px; }
-  .ev-scoring { background:rgba(0,230,118,0.12); color:var(--accent); }
-  .ev-neutral { background:rgba(136,136,136,0.12); color:var(--text2); }
-  .ev-bad     { background:rgba(255,59,48,0.12); color:var(--red); }
-  .ev-sub     { background:rgba(10,132,255,0.12); color:var(--blue); }
-  .ev-kick    { background:rgba(90,200,250,0.12); color:#5ac8fa; }
-  .ev-card-y  { background:rgba(255,159,10,0.15); color:var(--orange); }
-  .ev-card-r  { background:rgba(255,59,48,0.15); color:var(--red); }
   .footer {
     text-align: center;
     padding: 20px 16px 32px;
@@ -1039,74 +1003,328 @@
 
 <!-- ===== MATCH PAGE ===== -->
 <div class="page" id="page-match">
-  <div class="sec-head" style="padding:12px 16px 8px">
+  <div class="sec-head">
     <h2>Match Day</h2>
     <button class="btn sm" onclick="openModal('modal-new-match')">+ Match</button>
   </div>
 
   <div id="match-none" class="empty"><div class="icon">🏉</div><p>No match selected.<br>Create a new match to get started.</p></div>
 
-  <div id="match-active" style="display:none;flex-direction:column;min-height:0;height:calc(100vh - 120px);overflow:hidden">
-
-    <!-- Match header bar -->
-    <div style="padding:0 16px 8px;flex-shrink:0">
-      <select id="match-select" onchange="selectMatch(this.value)" style="width:100%;margin-bottom:8px"></select>
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="flex:1;text-align:center">
-          <div class="card-label" id="match-vs-label">vs Opponent</div>
-          <div id="match-score-display" style="font-family:var(--font-display);font-size:34px;font-weight:900;color:var(--accent);letter-spacing:2px">0 — 0</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:5px">
-          <button class="btn sm" onclick="openModal('modal-add-sub')" style="white-space:nowrap">+ Sub</button>
-          <button class="btn sm secondary" onclick="openModal('modal-end-match')">End</button>
-        </div>
+  <div id="match-active" style="display:none">
+    <div class="match-select-row">
+      <select id="match-select" onchange="selectMatch(this.value)"></select>
+    </div>
+    <div class="match-header">
+      <div class="card-label" style="text-align:center" id="match-vs-label">vs Opponent</div>
+      <div class="match-score" id="match-score-display">0 — 0</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
+        <button class="score-btn try-btn" onclick="openScoreModal('try')">
+          <span class="score-btn-pts">+5</span>
+          <span class="score-btn-label">Try</span>
+        </button>
+        <button class="score-btn conv-btn" onclick="openScoreModal('conversion')">
+          <span class="score-btn-pts">+2</span>
+          <span class="score-btn-label">Conversion</span>
+        </button>
+        <button class="score-btn drop-btn" onclick="openScoreModal('dropgoal')">
+          <span class="score-btn-pts">+3</span>
+          <span class="score-btn-label">Drop Goal</span>
+        </button>
       </div>
-      <!-- Timer row -->
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:10px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:10px 14px">
-        <div id="match-timer-display" style="font-family:var(--font-display);font-size:36px;font-weight:900;letter-spacing:3px;color:var(--text);line-height:1;min-width:90px;text-align:center">00:00</div>
-        <div style="display:flex;flex-direction:column;gap:5px">
-          <button id="timer-toggle-btn" class="btn" style="padding:8px 18px;font-size:14px;letter-spacing:1px" onclick="toggleTimer()">▶ Start</button>
-          <button class="btn secondary sm" onclick="resetTimer()" style="font-size:11px;padding:5px 10px">Reset</button>
-        </div>
+      <div style="display:flex;gap:6px;margin-top:6px">
+        <button class="btn sm secondary" style="flex:1" onclick="openScoreModal('penalty')">+3 Penalty</button>
+        <button class="btn sm secondary" style="flex:1" onclick="logOppScore()">+ Opp Score</button>
+        <button class="btn sm secondary" style="flex:1;color:var(--red)" onclick="undoLastScore()">Undo</button>
       </div>
+      <div id="score-log-list" style="margin-top:10px"></div>
     </div>
 
-
-    <!-- Match Roster (collapsible) -->
-    <div style="padding:0 16px 6px;flex-shrink:0">
-      <div id="roster-toggle" onclick="toggleMatchRoster()"
-        style="display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:9px 12px;cursor:pointer;user-select:none">
-        <span style="font-family:var(--font-display);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Match Roster</span>
-        <span id="roster-toggle-chevron" style="color:var(--text3);font-size:12px;transition:transform .2s">▼</span>
+    <!-- Match Roster -->
+    <div class="match-roster-section">
+      <div class="match-roster-toggle" id="roster-toggle" onclick="toggleMatchRoster()">
+        <h3>🏉 Match Roster</h3>
+        <span class="chevron">▼</span>
       </div>
-      <div id="match-roster-body" style="display:none;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius) var(--radius);overflow:hidden">
+      <div class="match-roster-body" id="match-roster-body">
         <div id="match-roster-inner"></div>
-        <div style="padding:8px 12px;border-top:1px solid var(--border);display:flex;gap:8px;align-items:center">
-          <button class="btn sm secondary" onclick="selectAllRoster()">Select All</button>
-          <span style="font-size:11px;color:var(--text3)">Tick players in squad for this match</span>
+        <div style="padding:10px 12px;border-top:1px solid var(--border)">
+          <button class="btn sm secondary" onclick="selectAllMatchRoster()">Select All</button>
+          <span style="font-size:12px;color:var(--text3);margin-left:10px">Tick players available for this match</span>
         </div>
       </div>
     </div>
 
-    <!-- Half tabs -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 16px 8px;flex-shrink:0">
-      <button id="htab-1" onclick="switchHalf(1)" class="half-tab active">1st Half</button>
-      <button id="htab-2" onclick="switchHalf(2)" class="half-tab">2nd Half</button>
+    <!-- Notes Section -->
+    <div class="half-tabs">
+      <div class="half-tab active" id="htab-1" onclick="switchHalf(1)">1st Half</div>
+      <div class="half-tab" id="htab-2" onclick="switchHalf(2)">2nd Half</div>
+    </div>
+    <div class="note-type-row">
+      <button class="note-type-btn pos active" id="ntype-pos" onclick="setNoteType('pos')">✓ Positive</button>
+      <button class="note-type-btn neg" id="ntype-neg" onclick="setNoteType('neg')">✗ Negative</button>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <input type="text" id="note-input" placeholder="Add observation..." onkeydown="if(event.key==='Enter')addNote()">
+      <button class="btn" onclick="addNote()" style="white-space:nowrap">Add</button>
+    </div>
+    <div id="notes-list"></div>
+
+    <div class="divider"></div>
+
+    <!-- Set Piece Tracker -->
+    <div style="margin-bottom:12px">
+      <div class="sec-head" style="margin-bottom:10px">
+        <h2 style="font-size:18px">Set Pieces</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+        <button id="sp-htab-1" onclick="switchSetPieceHalf(1)"
+          style="padding:12px;border-radius:var(--radius);border:2px solid var(--accent);background:var(--accent);color:#0f0f0f;font-family:var(--font-display);font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">
+          1st Half
+        </button>
+        <button id="sp-htab-2" onclick="switchSetPieceHalf(2)"
+          style="padding:12px;border-radius:var(--radius);border:2px solid var(--border);background:var(--surface2);color:var(--text2);font-family:var(--font-display);font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">
+          2nd Half
+        </button>
+      </div>
     </div>
 
-    <!-- Event log (scrollable) -->
-    <div id="event-log-container" style="flex:1;overflow-y:auto;padding:0 16px;min-height:0">
-      <div id="event-log-empty" style="color:var(--text3);font-size:13px;padding:20px 0;text-align:center">No events yet — tap below to log</div>
-      <div id="event-log-list"></div>
+    <!-- Quick Counters -->
+    <div class="card" style="margin-bottom:8px">
+      <div class="card-label" style="margin-bottom:12px">Match Events</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+
+        <!-- Tackles Made -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Tackles Made</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="sp-tackles-made">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','made',1)">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="adjustSetPiece('tackles','made',-1)">−</button>
+          </div>
+        </div>
+
+        <!-- Tackles Missed -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Tackles Missed</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--red);line-height:1" id="sp-tackles-missed">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn danger" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','missed',1)">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="adjustSetPiece('tackles','missed',-1)">−</button>
+          </div>
+        </div>
+
+        <!-- Mauls -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--blue);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Maul Formed</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--blue);line-height:1" id="sp-mauls-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--blue);border-color:var(--blue)" onclick="addSimpleEvent('mauls')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('mauls')">−</button>
+          </div>
+        </div>
+
+        <!-- Open Play Kicks -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--orange);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Open Play Kick</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--orange);line-height:1" id="sp-kicks-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--orange);border-color:var(--orange);color:#0f0f0f" onclick="addSimpleEvent('kicks')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('kicks')">−</button>
+          </div>
+        </div>
+
+        <!-- Turnovers -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Turnover Created</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="sp-turnovers-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="addSimpleEvent('turnovers')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('turnovers')">−</button>
+          </div>
+        </div>
+
+        <!-- Ball Held Up -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Ball Held Up</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--text);line-height:1" id="sp-heldup-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn secondary" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;border-color:var(--text2);color:var(--text)" onclick="addSimpleEvent('heldUp')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('heldUp')">−</button>
+          </div>
+        </div>
+
+      </div>
+      <!-- Tackle % -->
+      <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;color:var(--text3);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase">Tackle Success</span>
+        <span style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--accent)" id="sp-tackles-pct">—</span>
+      </div>
     </div>
 
-    <!-- Result banner shown when finished -->
-    <div id="match-result-banner" style="display:none;padding:0 16px 8px;flex-shrink:0"></div>
-
-    <!-- Quick Log fixed at bottom -->
-    <div id="quick-log-bar" style="flex-shrink:0;background:var(--surface);border-top:2px solid var(--border)">
-      <div id="ql-grid"></div>
+    <!-- Scrums -->
+    <div class="card" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="card-label">Scrums</div>
+        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--accent)" id="sp-scrums-pct">—</div>
+      </div>
+      <div style="display:flex;gap:16px">
+        <div>
+          <div style="font-size:11px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Won</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('scrums','won',-1)">−</button>
+            <span class="counter-val" id="sp-scrums-won">0</span>
+            <button class="counter-btn accent" onclick="adjustSetPiece('scrums','won',1)">+</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Lost</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('scrums','lost',-1)">−</button>
+            <span class="counter-val" id="sp-scrums-lost">0</span>
+            <button class="counter-btn" onclick="adjustSetPiece('scrums','lost',1)">+</button>
+          </div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="card-label">Total</div>
+          <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)" id="sp-scrums-total">0</div>
+        </div>
+      </div>
     </div>
+
+    <!-- Lineouts -->
+    <div class="card" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="card-label">Lineouts</div>
+        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--accent)" id="sp-lineouts-pct">—</div>
+      </div>
+      <div style="display:flex;gap:16px">
+        <div>
+          <div style="font-size:11px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Won</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('lineouts','won',-1)">−</button>
+            <span class="counter-val" id="sp-lineouts-won">0</span>
+            <button class="counter-btn accent" onclick="adjustSetPiece('lineouts','won',1)">+</button>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Lost</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('lineouts','lost',-1)">−</button>
+            <span class="counter-val" id="sp-lineouts-lost">0</span>
+            <button class="counter-btn" onclick="adjustSetPiece('lineouts','lost',1)">+</button>
+          </div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="card-label">Total</div>
+          <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)" id="sp-lineouts-total">0</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Penalties -->
+    <div class="card" style="margin-bottom:8px">
+      <div class="card-label" style="margin-bottom:8px">Penalties Conceded</div>
+      <div style="display:flex;gap:8px;align-items:flex-end">
+        <div style="flex:1">
+          <label style="font-size:11px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px">Type</label>
+          <select id="penalty-type-select" style="font-size:13px;padding:8px 10px">
+            <option value="Offside">Offside</option>
+            <option value="Not Rolling Away">Not Rolling Away</option>
+            <option value="Hands in Ruck">Hands in Ruck</option>
+            <option value="High Tackle">High Tackle</option>
+            <option value="Scrum Infringement">Scrum Infringement</option>
+            <option value="Lineout Infringement">Lineout Infringement</option>
+            <option value="Not Releasing the Tackle">Not Releasing the Tackle</option>
+            <option value="Not Releasing The Ball">Not Releasing The Ball</option>
+            <option value="Obstruction">Obstruction</option>
+            <option value="Diving/Not Holding Their Weight">Diving/Not Holding Their Weight</option>
+            <option value="Knock On">Knock On</option>
+            <option value="Forward Pass">Forward Pass</option>
+            <option value="Referee Dissent">Referee Dissent</option>
+            <option value="Kickoff Not 10">Kickoff Not 10</option>
+            <option value="Defense Not 10 at Penalty">Defense Not 10 at Penalty</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <button class="btn" style="padding:8px 14px;white-space:nowrap" onclick="addPenalty()">+ Add</button>
+      </div>
+      <div id="penalty-log" style="margin-top:10px"></div>
+    </div>
+
+    <!-- Penalty Field Map -->
+    <div class="card" style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div class="card-label">Penalty Map</div>
+        <button class="btn sm secondary" onclick="clearPenaltyMap()" style="font-size:11px;padding:4px 10px">Clear Map</button>
+      </div>
+      <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Tap the pitch after selecting a penalty type to place a pin</div>
+      <div id="penalty-map-container" style="position:relative;width:100%;touch-action:none">
+        <svg id="penalty-pitch-svg" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg"
+          style="width:100%;display:block;cursor:crosshair;border-radius:6px;overflow:visible"
+          onclick="handlePitchTap(event)">
+          <!-- Pitch grass -->
+          <rect x="0" y="0" width="300" height="200" rx="4" fill="#1a3d1a"/>
+          <!-- Alternating grass stripes -->
+          <rect x="0"   y="0" width="37.5" height="200" fill="#1e441e"/>
+          <rect x="75"  y="0" width="37.5" height="200" fill="#1e441e"/>
+          <rect x="150" y="0" width="37.5" height="200" fill="#1e441e"/>
+          <rect x="225" y="0" width="37.5" height="200" fill="#1e441e"/>
+          <!-- Pitch outline -->
+          <rect x="4" y="4" width="292" height="192" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+          <!-- Halfway line -->
+          <line x1="150" y1="4" x2="150" y2="196" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+          <!-- Centre circle -->
+          <circle cx="150" cy="100" r="14" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+          <!-- Centre spot -->
+          <circle cx="150" cy="100" r="1.5" fill="rgba(255,255,255,0.7)"/>
+          <!-- Left 22m line -->
+          <line x1="62" y1="4" x2="62" y2="196" stroke="rgba(255,255,255,0.5)" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- Right 22m line -->
+          <line x1="238" y1="4" x2="238" y2="196" stroke="rgba(255,255,255,0.5)" stroke-width="1" stroke-dasharray="4,3"/>
+          <!-- Left try line -->
+          <line x1="18" y1="4" x2="18" y2="196" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+          <!-- Right try line -->
+          <line x1="282" y1="4" x2="282" y2="196" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+          <!-- Left in-goal -->
+          <rect x="4" y="4" width="14" height="192" fill="rgba(255,255,255,0.04)"/>
+          <!-- Right in-goal -->
+          <rect x="282" y="4" width="14" height="192" fill="rgba(255,255,255,0.04)"/>
+          <!-- Left posts -->
+          <line x1="18" y1="86" x2="4" y2="86" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+          <line x1="18" y1="114" x2="4" y2="114" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+          <!-- Right posts -->
+          <line x1="282" y1="86" x2="296" y2="86" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+          <line x1="282" y1="114" x2="296" y2="114" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
+          <!-- 10m lines -->
+          <line x1="112" y1="4" x2="112" y2="196" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="2,4"/>
+          <line x1="188" y1="4" x2="188" y2="196" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="2,4"/>
+          <!-- Half labels -->
+          <text x="84" y="197" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.35)" font-family="sans-serif">OUR HALF</text>
+          <text x="216" y="197" text-anchor="middle" font-size="7" fill="rgba(255,255,255,0.35)" font-family="sans-serif">OPP HALF</text>
+          <!-- Pins rendered by JS -->
+          <g id="penalty-pins"></g>
+        </svg>
+      </div>
+      <!-- Legend -->
+      <div id="penalty-map-legend" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Subs Section -->
+    <div class="sec-head" style="margin-bottom:10px">
+      <h2 style="font-size:18px">Substitutions</h2>
+      <button class="btn sm" onclick="openModal('modal-add-sub')">+ Sub</button>
+    </div>
+    <div id="subs-list"></div>
+
+    <div class="divider"></div>
+
+    <!-- End Match -->
+    <div id="end-match-section">
+      <button class="btn danger" style="width:100%;padding:14px;font-size:16px;letter-spacing:2px" onclick="openModal('modal-end-match')">⏹ End Match</button>
+    </div>
+    <div id="match-result-banner" style="display:none"></div>
 
   </div>
 </div>
@@ -1265,29 +1483,18 @@
 <!-- Add Sub -->
 <div class="modal-overlay" id="modal-add-sub">
   <div class="modal">
-    <h3>Substitution</h3>
+    <h3>Record Substitution</h3>
     <div class="input-group">
       <label>Minute</label>
       <input type="number" id="sub-min" placeholder="e.g. 54" min="1" max="90">
     </div>
     <div class="input-group">
-      <label>Player OFF</label>
+      <label>Player OFF <span style="color:var(--text3);font-size:11px;letter-spacing:0;text-transform:none;font-weight:400">(currently on field)</span></label>
       <select id="sub-off"></select>
     </div>
     <div class="input-group">
-      <label>Player ON</label>
+      <label>Player ON <span style="color:var(--text3);font-size:11px;letter-spacing:0;text-transform:none;font-weight:400">(from bench)</span></label>
       <select id="sub-on"></select>
-    </div>
-    <div class="input-group">
-      <label>Reason</label>
-      <select id="sub-reason">
-        <option value="Tactical">Tactical</option>
-        <option value="Injury">Injury</option>
-        <option value="Blood Sub">Blood Sub</option>
-        <option value="HIA">HIA (Head Injury)</option>
-        <option value="Fatigue">Fatigue</option>
-        <option value="Other">Other</option>
-      </select>
     </div>
     <div class="modal-actions">
       <button class="btn secondary" onclick="closeModal('modal-add-sub')">Cancel</button>
@@ -1296,81 +1503,11 @@
   </div>
 </div>
 
-<!-- Detail Drawer Modal -->
-<div class="modal-overlay" id="modal-detail">
-  <div class="modal">
-    <h3 id="detail-modal-title">Add Detail</h3>
-    <input type="hidden" id="detail-event-id">
-    <div class="input-group">
-      <label>Player</label>
-      <select id="detail-player"></select>
-    </div>
-    <div class="input-group">
-      <label>Minute</label>
-      <input type="number" id="detail-minute" placeholder="e.g. 34" min="1" max="90">
-    </div>
-    <div class="input-group">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-        <label style="margin:0">Field Map <span style="color:var(--text3);font-size:11px;text-transform:none;letter-spacing:0;font-weight:400">(optional)</span></label>
-        <div style="display:flex;gap:5px">
-          <button id="pin-mode-start" onclick="setPinMode('start')"
-            style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;cursor:pointer;background:rgba(0,230,118,0.15);color:var(--accent);border:1px solid rgba(0,230,118,0.4)">
-            ● Start
-          </button>
-          <button id="pin-mode-end" onclick="setPinMode('end')"
-            style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;cursor:pointer;background:var(--surface2);color:var(--text3);border:1px solid var(--border)">
-            ● End
-          </button>
-          <button onclick="clearPins()"
-            style="font-family:var(--font-display);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:4px;cursor:pointer;background:var(--surface2);color:var(--text3);border:1px solid var(--border)">
-            Clear
-          </button>
-        </div>
-      </div>
-      <svg id="detail-pitch" class="pitch-mini" viewBox="0 0 300 100" onclick="handleDetailPitchTap(event)" style="cursor:crosshair">
-        <rect width="300" height="100" rx="3" fill="#1a3d1a"/>
-        <rect x="0" y="0" width="37.5" height="100" fill="#1e441e"/>
-        <rect x="75" y="0" width="37.5" height="100" fill="#1e441e"/>
-        <rect x="150" y="0" width="37.5" height="100" fill="#1e441e"/>
-        <rect x="225" y="0" width="37.5" height="100" fill="#1e441e"/>
-        <rect x="2" y="2" width="296" height="96" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-        <line x1="150" y1="2" x2="150" y2="98" stroke="rgba(255,255,255,0.6)" stroke-width="1"/>
-        <line x1="62" y1="2" x2="62" y2="98" stroke="rgba(255,255,255,0.4)" stroke-width="0.8" stroke-dasharray="3,2"/>
-        <line x1="238" y1="2" x2="238" y2="98" stroke="rgba(255,255,255,0.4)" stroke-width="0.8" stroke-dasharray="3,2"/>
-        <line x1="18" y1="2" x2="18" y2="98" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
-        <line x1="282" y1="2" x2="282" y2="98" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
-        <text x="84" y="97" text-anchor="middle" font-size="5" fill="rgba(255,255,255,0.3)" font-family="sans-serif">OUR HALF</text>
-        <text x="216" y="97" text-anchor="middle" font-size="5" fill="rgba(255,255,255,0.3)" font-family="sans-serif">OPP HALF</text>
-        <!-- Trajectory line -->
-        <line id="detail-traj-line" x1="-1" y1="-1" x2="-1" y2="-1" stroke="#ff9f0a" stroke-width="1.5" stroke-dasharray="3,2" opacity="0.7"/>
-        <!-- Start pin (green) -->
-        <circle id="detail-pin-start" cx="-20" cy="-20" r="5" fill="#00e676" stroke="#0f0f0f" stroke-width="1"/>
-        <text id="detail-pin-start-lbl" x="-20" y="-20" text-anchor="middle" font-size="4" fill="#0f0f0f" font-family="sans-serif" font-weight="bold" dy="1.5">S</text>
-        <!-- End pin (orange) -->
-        <circle id="detail-pin-end" cx="-20" cy="-20" r="5" fill="#ff9f0a" stroke="#0f0f0f" stroke-width="1"/>
-        <text id="detail-pin-end-lbl" x="-20" y="-20" text-anchor="middle" font-size="4" fill="#0f0f0f" font-family="sans-serif" font-weight="bold" dy="1.5">E</text>
-      </svg>
-      <div style="display:flex;gap:10px;margin-top:4px">
-        <span style="font-size:11px;color:var(--accent)">● Start position</span>
-        <span style="font-size:11px;color:var(--orange)">● End / where it went</span>
-      </div>
-    </div>
-    <div class="input-group">
-      <label>What happened next?</label>
-      <div class="outcome-grid" id="outcome-grid"></div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn secondary" onclick="closeModal('modal-detail')">Cancel</button>
-      <button class="btn" onclick="saveDetail()">Save Detail</button>
-    </div>
-  </div>
-</div>
-
 <!-- End Match Modal -->
 <div class="modal-overlay" id="modal-end-match">
   <div class="modal">
     <h3>End Match?</h3>
-    <p style="color:var(--text2);font-size:14px;margin-bottom:16px;line-height:1.5">This will finalise the result. You can reopen it to fix the score if needed.</p>
+    <p style="color:var(--text2);font-size:14px;margin-bottom:16px;line-height:1.5">This will finalise the result and lock the score. You can still view match notes and stats afterwards.</p>
     <div id="end-match-preview" style="background:var(--surface2);border-radius:var(--radius);padding:14px;text-align:center;margin-bottom:16px">
       <div style="font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase;margin-bottom:4px" id="end-match-vs"></div>
       <div style="font-family:var(--font-display);font-size:36px;font-weight:900;color:var(--accent)" id="end-match-score"></div>
@@ -1383,6 +1520,24 @@
   </div>
 </div>
 
+<!-- Score Event Modal -->
+<div class="modal-overlay" id="modal-score-event">
+  <div class="modal">
+    <h3 id="score-modal-title">Record Try</h3>
+    <div class="input-group">
+      <label id="score-player-label">Scorer</label>
+      <select id="score-player-select"></select>
+    </div>
+    <div class="input-group">
+      <label>Minute</label>
+      <input type="number" id="score-minute" placeholder="e.g. 23" min="1" max="90">
+    </div>
+    <div class="modal-actions">
+      <button class="btn secondary" onclick="closeModal('modal-score-event')">Cancel</button>
+      <button class="btn" onclick="confirmScoreEvent()">Record</button>
+    </div>
+  </div>
+</div>
 
 <div class="footer">Created by <strong>Sin Bin Performance</strong></div>
 
@@ -1418,13 +1573,10 @@ function showPage(name) {
   if (name === 'attendance') renderSessions();
   if (name === 'roster') renderRoster();
 }
+
+// ============ MODAL ============
 function openModal(id) {
-  if (id === 'modal-add-sub') {
-    populateSubSelects();
-    // Pre-fill minute from timer
-    const minEl = document.getElementById('sub-min');
-    if (minEl && !minEl.value) { const m = getTimerMinute(); if (m) minEl.value = m; }
-  }
+  if (id === 'modal-add-sub') populateSubSelects();
   if (id === 'modal-end-match') {
     const m = getCurrentMatch();
     if (m) {
@@ -1588,276 +1740,27 @@ function renderSessions() {
 }
 
 // ============ MATCH ============
-
-// ── Timer ──
-let timerInterval = null;
-let timerSeconds  = 0;
-let timerRunning  = false;
-
-function toggleTimer() {
-  if (timerRunning) {
-    clearInterval(timerInterval);
-    timerRunning = false;
-    document.getElementById('timer-toggle-btn').textContent = '▶ Start';
-    document.getElementById('timer-toggle-btn').classList.remove('danger');
-  } else {
-    timerInterval = setInterval(() => {
-      timerSeconds++;
-      updateTimerDisplay();
-    }, 1000);
-    timerRunning = true;
-    document.getElementById('timer-toggle-btn').textContent = '⏸ Stop';
-    document.getElementById('timer-toggle-btn').classList.add('danger');
-  }
-}
-
-function resetTimer() {
-  if (timerRunning) {
-    clearInterval(timerInterval);
-    timerRunning = false;
-  }
-  timerSeconds = 0;
-  updateTimerDisplay();
-  const btn = document.getElementById('timer-toggle-btn');
-  if (btn) { btn.textContent = '▶ Start'; btn.classList.remove('danger'); }
-}
-
-function updateTimerDisplay() {
-  const el = document.getElementById('match-timer-display');
-  if (!el) return;
-  const m = Math.floor(timerSeconds / 60);
-  const s = timerSeconds % 60;
-  el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  // Colour cues: green < 40m, amber 40-50m, red > 50m (halftime context)
-  el.style.color = m >= 50 ? 'var(--red)' : m >= 40 ? 'var(--orange)' : 'var(--text)';
-}
-
-function getTimerMinute() {
-  return Math.floor(timerSeconds / 60) || null;
-}
-
-// ── Match Roster ──
-function toggleMatchRoster() {
-  const body = document.getElementById('match-roster-body');
-  const chevron = document.getElementById('roster-toggle-chevron');
-  const open = body.style.display === 'block';
-  body.style.display = open ? 'none' : 'block';
-  chevron.style.transform = open ? '' : 'rotate(180deg)';
-  if (!open) renderMatchRoster();
-}
-
-function selectAllRoster() {
-  const m = getCurrentMatch();
-  if (!m) return;
-  if (!m.matchRoster) m.matchRoster = {};
-  state.players.forEach(p => {
-    if (!m.matchRoster[p.id]) m.matchRoster[p.id] = { selected:false, status:'bench' };
-    m.matchRoster[p.id].selected = true;
-  });
-  saveState();
-  renderMatchRoster();
-}
-
-function toggleRosterPlayer(playerId) {
-  const m = getCurrentMatch();
-  if (!m) return;
-  if (!m.matchRoster) m.matchRoster = {};
-  if (!m.matchRoster[playerId]) m.matchRoster[playerId] = { selected:false, status:'bench' };
-  m.matchRoster[playerId].selected = !m.matchRoster[playerId].selected;
-  saveState();
-  renderMatchRoster();
-}
-
-function setRosterStatus(playerId, status) {
-  const m = getCurrentMatch();
-  if (!m || !m.matchRoster) return;
-  m.matchRoster[playerId].status = status;
-  saveState();
-  renderMatchRoster();
-}
-
-function renderMatchRoster() {
-  const m = getCurrentMatch();
-  const el = document.getElementById('match-roster-inner');
-  if (!el || !m) return;
-  if (!state.players.length) {
-    el.innerHTML = '<div style="padding:12px;color:var(--text3);font-size:13px">Add players in the Roster tab first.</div>';
-    return;
-  }
-  if (!m.matchRoster) m.matchRoster = {};
-  state.players.forEach((p,i) => {
-    if (!m.matchRoster[p.id]) m.matchRoster[p.id] = { selected:true, status:i<15?'field':'bench' };
-  });
-  const selected    = state.players.filter(p =>  m.matchRoster[p.id]?.selected);
-  const notSelected = state.players.filter(p => !m.matchRoster[p.id]?.selected);
-  const starters = selected.filter(p => m.matchRoster[p.id]?.status==='field');
-  const bench    = selected.filter(p => m.matchRoster[p.id]?.status==='bench');
-
-  const row = (p, inRoster) => {
-    const entry = m.matchRoster[p.id] || { selected:false, status:'bench' };
-    const dot = `<div style="width:8px;height:8px;border-radius:50%;background:${inRoster?(entry.status==='field'?'var(--accent)':'var(--orange)'):'var(--text3)'};flex-shrink:0"></div>`;
-    const statusSel = inRoster ? `<select onchange="setRosterStatus(${p.id},this.value)" onclick="event.stopPropagation()"
-      style="width:auto;padding:3px 6px;font-size:12px;background:var(--surface2);border-color:var(--border)">
-      <option value="field" ${entry.status==='field'?'selected':''}>Starting</option>
-      <option value="bench" ${entry.status==='bench'?'selected':''}>Bench</option>
-    </select>` : '';
-    return `<div onclick="toggleRosterPlayer(${p.id})" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border-bottom:1px solid var(--border);cursor:pointer">
-      <input type="checkbox" ${inRoster?'checked':''} onclick="event.stopPropagation();toggleRosterPlayer(${p.id})" style="width:18px;height:18px;accent-color:var(--accent);flex-shrink:0">
-      ${dot}
-      <span style="font-family:var(--font-display);font-size:14px;font-weight:900;color:var(--accent);width:24px;flex-shrink:0">${p.num!=='—'?p.num:'—'}</span>
-      <span style="flex:1;font-size:14px;font-weight:500">${p.first} ${p.last}<br><span style="font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1px">${p.pos}</span></span>
-      ${statusSel}
-    </div>`;
-  };
-
-  let html = '';
-  if (starters.length) { html += `<div style="font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;padding:6px 12px 2px">Starting XV</div>`; html += starters.map(p=>row(p,true)).join(''); }
-  if (bench.length)    { html += `<div style="font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;padding:6px 12px 2px;margin-top:2px">Bench</div>`; html += bench.map(p=>row(p,true)).join(''); }
-  if (notSelected.length) { html += `<div style="font-size:10px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;padding:6px 12px 2px;margin-top:2px">Not Playing</div>`; html += notSelected.map(p=>row(p,false)).join(''); }
-  el.innerHTML = html;
-}
-
-const QL_GROUPS = [
-  { label:'Scoring', color:'var(--accent)', events:[
-    { key:'try',        label:'Try',       pts:5, cls:'scoring' },
-    { key:'conversion', label:'Conv.',      pts:2, cls:'scoring' },
-    { key:'pen_kick',   label:'Pen Kick',   pts:3, cls:'scoring' },
-    { key:'drop_goal',  label:'Drop Goal',  pts:3, cls:'scoring' },
-  ]},
-  { label:'Opp Score', color:'var(--red)', events:[
-    { key:'opp_try',    label:'Opp Try',    pts:0, cls:'danger' },
-    { key:'opp_conv',   label:'Opp Conv.',  pts:0, cls:'danger' },
-    { key:'opp_pen',    label:'Opp Pen',    pts:0, cls:'danger' },
-  ]},
-  { label:'Set Piece', color:'var(--blue)', events:[
-    { key:'scrum_w',   label:'Scrum W',   pts:0, cls:''       },
-    { key:'scrum_l',   label:'Scrum L',   pts:0, cls:'danger' },
-    { key:'lineout_w', label:'Lineout W', pts:0, cls:''       },
-    { key:'lineout_l', label:'Lineout L', pts:0, cls:'danger' },
-  ]},
-  { label:'Play', color:'var(--text2)', events:[
-    { key:'tackle_m',  label:'Tackle ✓',  pts:0, cls:''       },
-    { key:'tackle_l',  label:'Tackle ✗',  pts:0, cls:'danger' },
-    { key:'turnover',  label:'Turnover',  pts:0, cls:''       },
-    { key:'maul',      label:'Maul',      pts:0, cls:''       },
-    { key:'penalty',   label:'Penalty',   pts:0, cls:'danger' },
-    { key:'kick',      label:'Open Kick', pts:0, cls:''       },
-    { key:'kickoff',   label:'Kickoff',   pts:0, cls:''       },
-    { key:'yellow',    label:'Yellow',    pts:0, cls:''       },
-    { key:'red',       label:'Red Card',  pts:0, cls:'danger' },
-  ]},
-];
-const QL_EVENTS = QL_GROUPS.flatMap(g => g.events);
-
-const EV_TAG = {
-  try:       ['Try',        'ev-scoring'],
-  conversion:['Conv.',      'ev-scoring'],
-  pen_kick:  ['Pen. Kick',  'ev-scoring'],
-  drop_goal: ['Drop Goal',  'ev-scoring'],
-  opp_try:   ['Opp Try',    'ev-bad'],
-  opp_conv:  ['Opp Conv.',  'ev-bad'],
-  opp_pen:   ['Opp Pen',    'ev-bad'],
-  opp_score: ['Opp Score',  'ev-bad'],
-  scrum_w:   ['Scrum W',    'ev-neutral'],
-  scrum_l:   ['Scrum L',    'ev-bad'],
-  lineout_w: ['Lineout W',  'ev-neutral'],
-  lineout_l: ['Lineout L',  'ev-bad'],
-  penalty:   ['Penalty',    'ev-bad'],
-  turnover:  ['Turnover',   'ev-neutral'],
-  maul:      ['Maul',       'ev-neutral'],
-  kick:      ['Kick',       'ev-kick'],
-  kickoff:   ['Kickoff',    'ev-kick'],
-  tackle_m:  ['Tackle ✓',   'ev-neutral'],
-  tackle_l:  ['Tackle ✗',   'ev-bad'],
-  yellow:    ['Yellow',     'ev-card-y'],
-  red:       ['Red Card',   'ev-card-r'],
-  sub:       ['Sub',        'ev-sub'],
-};
-
-const OUTCOMES = [
-  'Ball carried forward','Tackle made','Try scored','Penalty awarded',
-  'Turnover won','Cleared to touch','Ball held up','Counter-attack',
-  'Knock on','Forward pass'
-];
-
-const SCORING_KEYS  = { try:5, conversion:2, pen_kick:3, drop_goal:3 };
-const OPP_SCORE_PTS = { opp_try:5, opp_conv:2, opp_pen:3 };
-let currentHalf = 1;
-let detailPinX = null, detailPinY = null;
-let detailEndX = null, detailEndY = null;
-let pinMode = 'start';
-
-function setPinMode(mode) {
-  pinMode = mode;
-  const s = document.getElementById('pin-mode-start');
-  const e = document.getElementById('pin-mode-end');
-  if (!s || !e) return;
-  if (mode==='start') {
-    s.style.cssText += ';background:rgba(0,230,118,0.15);color:var(--accent);border-color:rgba(0,230,118,0.4)';
-    e.style.cssText += ';background:var(--surface2);color:var(--text3);border-color:var(--border)';
-  } else {
-    e.style.cssText += ';background:rgba(255,159,10,0.15);color:var(--orange);border-color:rgba(255,159,10,0.4)';
-    s.style.cssText += ';background:var(--surface2);color:var(--text3);border-color:var(--border)';
-  }
-}
-
-function clearPins() {
-  detailPinX=null; detailPinY=null; detailEndX=null; detailEndY=null;
-  renderDetailPins();
-}
-
-function handleDetailPitchTap(e) {
-  const svg = document.getElementById('detail-pitch');
-  const rect = svg.getBoundingClientRect();
-  const x = Math.round((e.clientX-rect.left)/rect.width*300*10)/10;
-  const y = Math.round((e.clientY-rect.top)/rect.height*100*10)/10;
-  if (pinMode==='start') { detailPinX=x; detailPinY=y; setPinMode('end'); }
-  else                   { detailEndX=x; detailEndY=y; }
-  renderDetailPins();
-}
-
-function renderDetailPins() {
-  const sp = (id, lid, x, y) => {
-    const c=document.getElementById(id), l=document.getElementById(lid);
-    const cx=x!==null?x:-20, cy=y!==null?y:-20;
-    if(c){c.setAttribute('cx',cx);c.setAttribute('cy',cy);}
-    if(l){l.setAttribute('x',cx);l.setAttribute('y',cy);}
-  };
-  sp('detail-pin-start','detail-pin-start-lbl',detailPinX,detailPinY);
-  sp('detail-pin-end','detail-pin-end-lbl',detailEndX,detailEndY);
-  const line=document.getElementById('detail-traj-line');
-  if(line) {
-    if(detailPinX!==null&&detailEndX!==null) {
-      line.setAttribute('x1',detailPinX);line.setAttribute('y1',detailPinY);
-      line.setAttribute('x2',detailEndX);line.setAttribute('y2',detailEndY);
-    } else { line.setAttribute('x1',-1);line.setAttribute('y1',-1);line.setAttribute('x2',-1);line.setAttribute('y2',-1); }
-  }
-}
-
-// old alias kept for safety
-function renderDetailPin() { renderDetailPins(); }
-
-function getMatchEvents(m) {
-  if (!m.events) m.events = [];
-  return m.events;
-}
-
 function createMatch() {
   const date = document.getElementById('match-date').value;
-  const opp  = document.getElementById('match-opponent').value.trim();
-  const loc  = document.getElementById('match-location').value;
+  const opp = document.getElementById('match-opponent').value.trim();
+  const loc = document.getElementById('match-location').value;
   if (!date || !opp) return alert('Please fill in date and opponent.');
   const id = Date.now();
+  // matchRoster: playerId -> { selected: bool, status: 'field'|'bench' }
+  // Default first 15 to field, rest to bench
   const matchRoster = {};
-  state.players.forEach((p,i) => { matchRoster[p.id] = { selected:true, status: i<15?'field':'bench' }; });
-  state.matches.push({ id, date, opp, loc, scoreFor:0, scoreAgainst:0, events:[], matchRoster, finished:false });
+  state.players.forEach((p, i) => {
+    matchRoster[p.id] = { selected: true, status: i < 15 ? 'field' : 'bench' };
+  });
+  const lineup = {};
+  state.players.slice(0,15).forEach((p) => lineup[p.id] = { start: true, onAt: 0, offAt: null });
+  state.matches.push({ id, date, opp, loc, scoreFor: 0, scoreAgainst: 0, notes: { 1:[], 2:[] }, subs: [], lineup, matchRoster });
   state.currentMatchId = id;
   saveState();
   closeModal('modal-new-match');
   document.getElementById('match-opponent').value = '';
   renderMatchPage();
 }
-
 function selectMatch(id) {
   state.currentMatchId = parseInt(id);
   saveState();
@@ -1866,305 +1769,630 @@ function selectMatch(id) {
 function getCurrentMatch() {
   return state.matches.find(m => m.id === state.currentMatchId);
 }
+const SCORE_TYPES = {
+  try:        { label: 'Try',        pts: 5, color: 'var(--green)',  playerLabel: 'Try Scorer' },
+  conversion: { label: 'Conversion', pts: 2, color: 'var(--blue)',   playerLabel: 'Kicker' },
+  dropgoal:   { label: 'Drop Goal',  pts: 3, color: 'var(--orange)', playerLabel: 'Scorer' },
+  penalty:    { label: 'Penalty',    pts: 3, color: 'var(--orange)', playerLabel: 'Kicker' },
+};
+let pendingScoreType = null;
 
-function switchHalf(h) {
-  currentHalf = h;
-  document.getElementById('htab-1').classList.toggle('active', h===1);
-  document.getElementById('htab-2').classList.toggle('active', h===2);
-  renderEventLog();
-  renderQuickLog();
-}
-
-function logEvent(key) {
+function openScoreModal(type) {
+  pendingScoreType = type;
+  const cfg = SCORE_TYPES[type];
+  document.getElementById('score-modal-title').textContent = `Record ${cfg.label} (+${cfg.pts})`;
+  document.getElementById('score-player-label').textContent = cfg.playerLabel;
+  // Populate player select from match roster (on-field players)
   const m = getCurrentMatch();
-  if (!m || m.finished) return;
-  const ev = { id:Date.now(), key, half:currentHalf, detail:{ minute: getTimerMinute() } };
-  if (SCORING_KEYS[key]) {
-    m.scoreFor = (m.scoreFor||0) + SCORING_KEYS[key];
-  } else if (OPP_SCORE_PTS[key]) {
-    ev.oppPts = OPP_SCORE_PTS[key];
-    m.scoreAgainst = (m.scoreAgainst||0) + OPP_SCORE_PTS[key];
-  }
-  getMatchEvents(m).unshift(ev);
-  saveState();
-  renderEventLog();
-  renderQuickLog();
-  updateScoreDisplay();
-}
-
-function deleteEvent(evId) {
-  const m = getCurrentMatch();
-  if (!m) return;
-  const ev = getMatchEvents(m).find(e => e.id === evId);
-  if (!ev) return;
-  if (SCORING_KEYS[ev.key]) m.scoreFor = Math.max(0,(m.scoreFor||0) - SCORING_KEYS[ev.key]);
-  if (OPP_SCORE_PTS[ev.key]) m.scoreAgainst = Math.max(0,(m.scoreAgainst||0) - (OPP_SCORE_PTS[ev.key]||0));
-  if (ev.key==='opp_score') m.scoreAgainst = Math.max(0,(m.scoreAgainst||0) - (ev.oppPts||0));
-  // Revert sub lineup
-  if (ev.key==='sub' && ev.detail) {
-    const { offId, onId, minute } = ev.detail;
-    if (!m.lineup) m.lineup = {};
-    if (offId && m.lineup[offId]) m.lineup[offId].offAt = null;
-    if (onId && m.lineup[onId]) { delete m.lineup[onId]; }
-  }
-  m.events = getMatchEvents(m).filter(e => e.id !== evId);
-  saveState();
-  renderEventLog();
-  renderQuickLog();
-  updateScoreDisplay();
-}
-
-function openDetailModal(evId) {
-  const m = getCurrentMatch();
-  if (!m) return;
-  const ev = getMatchEvents(m).find(e => e.id === evId);
-  if (!ev) return;
-  const [label] = EV_TAG[ev.key] || [ev.key];
-  document.getElementById('detail-modal-title').textContent = `Detail — ${label}`;
-  document.getElementById('detail-event-id').value = evId;
-  // Players
-  const opts = ['<option value="">— None —</option>', ...state.players.map(p =>
-    `<option value="${p.id}" ${ev.detail.playerId==p.id?'selected':''}>
-      ${p.num!=='—'?'#'+p.num+' ':''} ${p.first} ${p.last}</option>`)].join('');
-  document.getElementById('detail-player').innerHTML = opts;
-  document.getElementById('detail-minute').value = ev.detail.minute || '';
-  // Pitch pin
-  detailPinX = ev.detail.pitchX || null;
-  detailPinY = ev.detail.pitchY || null;
-  detailEndX = ev.detail.pitchEndX || null;
-  detailEndY = ev.detail.pitchEndY || null;
-  setPinMode('start');
-  renderDetailPins();
-  // Outcomes
-  const og = document.getElementById('outcome-grid');
-  og.innerHTML = OUTCOMES.map(o => `
-    <button class="outcome-btn ${ev.detail.outcome===o?'selected':''}" onclick="selectOutcome(this,'${o}')">${o}</button>
-  `).join('');
-  openModal('modal-detail');
-}
-
-function selectOutcome(btn, val) {
-  document.querySelectorAll('#outcome-grid .outcome-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
-function handleDetailPitchTap(e) {
-  const svg = document.getElementById('detail-pitch');
-  const rect = svg.getBoundingClientRect();
-  detailPinX = Math.round((e.clientX - rect.left) / rect.width * 300 * 10) / 10;
-  detailPinY = Math.round((e.clientY - rect.top) / rect.height * 100 * 10) / 10;
-  renderDetailPin();
-}
-
-function renderDetailPin() {
-  const pin = document.getElementById('detail-pitch-pin');
-  if (!pin) return;
-  if (detailPinX !== null) {
-    pin.setAttribute('cx', detailPinX);
-    pin.setAttribute('cy', detailPinY);
-  } else {
-    pin.setAttribute('cx', -20);
-    pin.setAttribute('cy', -20);
-  }
-}
-
-function saveDetail() {
-  const m = getCurrentMatch();
-  if (!m) return;
-  const evId = parseInt(document.getElementById('detail-event-id').value);
-  const ev = getMatchEvents(m).find(e => e.id === evId);
-  if (!ev) return;
-  const playerId = parseInt(document.getElementById('detail-player').value) || null;
-  const minute   = parseInt(document.getElementById('detail-minute').value) || null;
-  const outcome  = document.querySelector('#outcome-grid .outcome-btn.selected')?.textContent || null;
-  ev.detail = { ...ev.detail, playerId, minute, outcome,
-    pitchX: detailPinX, pitchY: detailPinY,
-    pitchEndX: detailEndX, pitchEndY: detailEndY };
-  saveState();
-  closeModal('modal-detail');
-  renderEventLog();
-}
-
-function recordSub() {
-  const min    = parseInt(document.getElementById('sub-min').value);
-  const offId  = parseInt(document.getElementById('sub-off').value);
-  const onId   = parseInt(document.getElementById('sub-on').value);
-  const reason = document.getElementById('sub-reason').value;
-  if (!min || min < 1) return alert('Enter a valid minute.');
-  if (!offId || !onId) return alert('Please select valid players.');
-  if (offId === onId) return alert('On and Off cannot be the same player.');
-  const m = getCurrentMatch();
-  if (!m) return;
-  const ev = { id:Date.now(), key:'sub', half:currentHalf, detail:{ offId, onId, reason, minute:min } };
-  getMatchEvents(m).unshift(ev);
-  // Update lineup for play time tracking
-  if (!m.lineup) m.lineup = {};
-  if (!m.lineup[offId]) m.lineup[offId] = { start:true, onAt:0, offAt:null };
-  m.lineup[offId].offAt = min;
-  if (!m.lineup[onId]) m.lineup[onId] = { start:false, onAt:min, offAt:null };
-  else m.lineup[onId].onAt = min;
-  saveState();
-  closeModal('modal-add-sub');
-  document.getElementById('sub-min').value = '';
-  renderEventLog();
-  renderQuickLog();
-}
-
-function populateSubSelects() {
-  const m = getCurrentMatch();
-  let onField = [], onBench = [];
-  if (m && m.matchRoster && state.players.length) {
-    const events = getMatchEvents(m);
-    const subbedOff = new Set(events.filter(e=>e.key==='sub').map(e=>e.detail.offId));
-    const subbedOn  = new Set(events.filter(e=>e.key==='sub').map(e=>e.detail.onId));
-    state.players.filter(p=>m.matchRoster[p.id]?.selected).forEach(p => {
+  let players = state.players;
+  if (m && m.matchRoster) {
+    const subbedOff = new Set((m.subs || []).map(s => s.offId));
+    const subbedOn  = new Set((m.subs || []).map(s => s.onId));
+    players = state.players.filter(p => {
       const entry = m.matchRoster[p.id];
-      if (entry.status==='field') { subbedOff.has(p.id) ? null : onField.push(p); }
-      else { subbedOn.has(p.id) && !subbedOff.has(p.id) ? onField.push(p) : !subbedOn.has(p.id) ? onBench.push(p) : null; }
+      if (!entry || !entry.selected) return false;
+      if (entry.status === 'field') return !subbedOff.has(p.id);
+      if (entry.status === 'bench') return subbedOn.has(p.id) && !subbedOff.has(p.id);
+      return false;
     });
-  } else { onField = [...state.players]; onBench = [...state.players]; }
-  const mkOpts = (arr,fb) => arr.length ? arr.map(p=>`<option value="${p.id}">${p.num!=='—'?'#'+p.num+' ':''} ${p.first} ${p.last}</option>`).join('') : `<option value="">${fb}</option>`;
-  document.getElementById('sub-off').innerHTML = mkOpts(onField,'No players on field');
-  document.getElementById('sub-on').innerHTML  = mkOpts(onBench,'No players on bench');
+    if (!players.length) players = state.players; // fallback
+  }
+  const opts = players.map(p => `<option value="${p.id}">${p.num !== '—' ? '#'+p.num+' ' : ''}${p.first} ${p.last}</option>`).join('');
+  document.getElementById('score-player-select').innerHTML = (opts || '<option value="">Unknown</option>');
+  document.getElementById('score-minute').value = '';
+  openModal('modal-score-event');
+}
+
+function confirmScoreEvent() {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const type = pendingScoreType;
+  const cfg = SCORE_TYPES[type];
+  const playerId = parseInt(document.getElementById('score-player-select').value) || null;
+  const minute = parseInt(document.getElementById('score-minute').value) || null;
+  if (!m.scoreEvents) m.scoreEvents = [];
+  m.scoreEvents.push({ id: Date.now(), type, pts: cfg.pts, playerId, minute });
+  // Recalculate score from events
+  m.scoreFor = m.scoreEvents.filter(e => !e.opp).reduce((sum, e) => sum + e.pts, 0);
+  saveState();
+  closeModal('modal-score-event');
+  updateScoreDisplay();
+  renderScoreLog();
+}
+
+function logOppScore() {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const pts = parseInt(prompt('Opponent points scored (3, 5, 7, etc):', '5'));
+  if (!pts || isNaN(pts)) return;
+  if (!m.scoreEvents) m.scoreEvents = [];
+  m.scoreEvents.push({ id: Date.now(), type: 'opp', pts, opp: true, minute: null });
+  m.scoreAgainst = m.scoreEvents.filter(e => e.opp).reduce((sum, e) => sum + e.pts, 0);
+  saveState();
+  updateScoreDisplay();
+  renderScoreLog();
+}
+
+function undoLastScore() {
+  const m = getCurrentMatch();
+  if (!m || !m.scoreEvents || !m.scoreEvents.length) return;
+  m.scoreEvents.pop();
+  m.scoreFor     = m.scoreEvents.filter(e => !e.opp).reduce((sum, e) => sum + e.pts, 0);
+  m.scoreAgainst = m.scoreEvents.filter(e =>  e.opp).reduce((sum, e) => sum + e.pts, 0);
+  saveState();
+  updateScoreDisplay();
+  renderScoreLog();
 }
 
 function updateScoreDisplay() {
   const m = getCurrentMatch();
   if (!m) return;
-  const el = document.getElementById('match-score-display');
-  if (el) el.textContent = `${m.scoreFor||0} — ${m.scoreAgainst||0}`;
+  document.getElementById('match-score-display').textContent = `${m.scoreFor} — ${m.scoreAgainst}`;
 }
 
-function renderQuickLog() {
+function renderScoreLog() {
   const m = getCurrentMatch();
-  const grid = document.getElementById('ql-grid');
-  if (!grid) return;
-  const events = m ? getMatchEvents(m).filter(e=>e.half===currentHalf) : [];
-  const counts = {};
-  events.forEach(e => counts[e.key] = (counts[e.key]||0) + 1);
-
-  grid.innerHTML = QL_GROUPS.map(group => `
-    <div style="padding:4px 10px 2px;background:var(--surface);border-top:1px solid var(--border)">
-      <span style="font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${group.color}">${group.label}</span>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(${Math.min(group.events.length, 5)},1fr);gap:3px;padding:3px 6px 6px">
-      ${group.events.map(ev => `
-        <div class="ql-btn ${ev.cls}" onclick="logEvent('${ev.key}')" style="padding:10px 2px">
-          <span class="ql-btn-label" style="font-size:12px;line-height:1.3">${ev.label}</span>
-          <span class="ql-btn-count" style="font-size:22px">${counts[ev.key]||0}</span>
-        </div>`).join('')}
-    </div>
-  `).join('');
-}
-
-function renderEventLog() {
-  const m = getCurrentMatch();
-  const listEl = document.getElementById('event-log-list');
-  const emptyEl = document.getElementById('event-log-empty');
-  if (!listEl) return;
-  const allEvents = m ? getMatchEvents(m).filter(e=>e.half===currentHalf) : [];
-  if (!allEvents.length) {
-    listEl.innerHTML = '';
-    if (emptyEl) emptyEl.style.display = 'block';
-    return;
-  }
-  if (emptyEl) emptyEl.style.display = 'none';
-  listEl.innerHTML = allEvents.map(ev => {
-    const [label, tagCls] = EV_TAG[ev.key] || [ev.key, 'ev-neutral'];
-    const d = ev.detail || {};
-    const player = state.players.find(p=>p.id===d.playerId);
-    let mainText = '';
-    if (ev.key==='sub') {
-      const off = state.players.find(p=>p.id===d.offId);
-      const on  = state.players.find(p=>p.id===d.onId);
-      mainText = `${on?on.first+' '+on.last:'?'} on / ${off?off.first+' '+off.last:'?'} off`;
-    } else if (player) {
-      mainText = `${player.first} ${player.last}`;
-    } else if (OPP_SCORE_PTS[ev.key]) {
-      mainText = `+${OPP_SCORE_PTS[ev.key]} pts`;
-    } else if (ev.key==='opp_score') {
-      mainText = `+${ev.oppPts||'?'} pts`;
+  const el = document.getElementById('score-log-list');
+  if (!m || !m.scoreEvents || !m.scoreEvents.length) { el.innerHTML = ''; return; }
+  el.innerHTML = m.scoreEvents.map(e => {
+    if (e.opp) {
+      return `<div class="score-log-item">
+        <span class="score-log-min">${e.minute ? e.minute+"'" : '—'}</span>
+        <span class="score-log-type" style="color:var(--red)">OPP</span>
+        <span class="score-log-player" style="color:var(--text3)">Opponent</span>
+        <span class="score-log-pts" style="color:var(--red)">+${e.pts}</span>
+      </div>`;
     }
-    const detailSummary = [];
-    if (d.minute) detailSummary.push(`${d.minute}'`);
-    if (ev.key==='sub' && d.reason) detailSummary.push(d.reason);
-    if (d.outcome) detailSummary.push(d.outcome);
-    if (d.pitchX) detailSummary.push(d.pitchEndX ? '📍→📍' : '📍');
-    const hasDetail = d.playerId||d.minute||d.outcome||d.pitchX;
-    const showDetailBtn = ev.key !== 'sub';
-    return `<div class="ev-item">
-      <span class="ev-min">${d.minute?d.minute+'':'' }</span>
-      <div class="ev-body">
-        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
-          <span class="ev-tag ${tagCls}">${label}</span>
-          ${mainText?`<span class="ev-main">${mainText}</span>`:''}
-        </div>
-        ${detailSummary.length?`<div class="ev-detail-text">${detailSummary.join(' · ')}</div>`:''}
-      </div>
-      ${showDetailBtn?`<button class="ev-detail-btn ${hasDetail?'has-detail':''}" onclick="openDetailModal(${ev.id})">${hasDetail?'detail ▾':'+ detail'}</button>`:''}
-      <button class="ev-del-btn" onclick="deleteEvent(${ev.id})">✕</button>
+    const cfg = SCORE_TYPES[e.type];
+    const player = state.players.find(p => p.id === e.playerId);
+    const pName = player ? `${player.first} ${player.last}` : '—';
+    return `<div class="score-log-item">
+      <span class="score-log-min">${e.minute ? e.minute+"'" : '—'}</span>
+      <span class="score-log-type" style="color:${cfg.color}">${cfg.label}</span>
+      <span class="score-log-player">${pName}</span>
+      <span class="score-log-pts" style="color:${cfg.color}">+${e.pts}</span>
     </div>`;
   }).join('');
 }
+function switchHalf(h) {
+  state.currentHalf = h;
+  document.getElementById('htab-1').classList.toggle('active', h===1);
+  document.getElementById('htab-2').classList.toggle('active', h===2);
+  renderNotes();
+}
 
+// ============ SET PIECES ============
+let currentSetPieceHalf = 1;
+
+function switchSetPieceHalf(h) {
+  currentSetPieceHalf = h;
+  const tab1 = document.getElementById('sp-htab-1');
+  const tab2 = document.getElementById('sp-htab-2');
+  if (tab1 && tab2) {
+    tab1.style.background      = h===1 ? 'var(--accent)'   : 'var(--surface2)';
+    tab1.style.color            = h===1 ? '#0f0f0f'         : 'var(--text2)';
+    tab1.style.borderColor      = h===1 ? 'var(--accent)'   : 'var(--border)';
+    tab2.style.background      = h===2 ? 'var(--accent)'   : 'var(--surface2)';
+    tab2.style.color            = h===2 ? '#0f0f0f'         : 'var(--text2)';
+    tab2.style.borderColor      = h===2 ? 'var(--accent)'   : 'var(--border)';
+  }
+  renderSetPieces();
+}
+
+function getSetPieceData(m) {
+  const def = () => ({
+    scrums:  { ourWon:0, ourLost:0, theirLost:0, theirStolen:0 },
+    lineouts:{ ourWon:0, ourLost:0, theirLost:0, theirStolen:0 },
+    tackles: { made:0, missed:0 },
+    penalties:[],
+    mauls:[], kicks:[], turnovers:[], heldUp:[]
+  });
+  if (!m.setPieces) m.setPieces = { 1: def(), 2: def() };
+  if (!m.setPieces[1]) m.setPieces[1] = def();
+  if (!m.setPieces[2]) m.setPieces[2] = def();
+  // migrate old structure if needed
+  [1,2].forEach(h => {
+    const d = m.setPieces[h];
+    if (!d.scrums.ourWon && d.scrums.won !== undefined) {
+      d.scrums = { ourWon: d.scrums.won||0, ourLost: d.scrums.lost||0, theirLost:0, theirStolen:0 };
+    }
+    if (!d.lineouts.ourWon && d.lineouts.won !== undefined) {
+      d.lineouts = { ourWon: d.lineouts.won||0, ourLost: d.lineouts.lost||0, theirLost:0, theirStolen:0 };
+    }
+    if (!d.tackles) d.tackles = { made:0, missed:0 };
+    if (!d.mauls)     d.mauls = [];
+    if (!d.kicks)     d.kicks = [];
+    if (!d.turnovers) d.turnovers = [];
+    if (!d.heldUp)    d.heldUp = [];
+  });
+  return m.setPieces[currentSetPieceHalf];
+}
+
+function adjustSetPiece(type, outcome, delta) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const data = getSetPieceData(m);
+  data[type][outcome] = Math.max(0, (data[type][outcome] || 0) + delta);
+  saveState();
+  renderSetPieces();
+}
+
+// Penalty type colour map
+const PENALTY_COLORS = {
+  'Offside':                        '#ff9f0a',
+  'Not Rolling Away':               '#ff6b6b',
+  'Hands in Ruck':                  '#cc44ff',
+  'High Tackle':                    '#ff3b30',
+  'Scrum Infringement':             '#0a84ff',
+  'Lineout Infringement':           '#30d158',
+  'Not Releasing the Tackle':       '#ff9f0a',
+  'Not Releasing The Ball':         '#ff6b6b',
+  'Obstruction':                    '#cc44ff',
+  'Diving/Not Holding Their Weight':'#5ac8fa',
+  'Knock On':                       '#ff9f0a',
+  'Forward Pass':                   '#0a84ff',
+  'Referee Dissent':                '#ff3b30',
+  'Kickoff Not 10':                 '#30d158',
+  'Defense Not 10 at Penalty':      '#5ac8fa',
+  'Other':                          '#888888',
+};
+
+function handlePitchTap(event) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const svg = document.getElementById('penalty-pitch-svg');
+  const rect = svg.getBoundingClientRect();
+  // Convert click position to SVG viewBox coordinates (0-300, 0-200)
+  const xPct = (event.clientX - rect.left) / rect.width;
+  const yPct = (event.clientY - rect.top)  / rect.height;
+  const svgX = Math.round(xPct * 300 * 10) / 10;
+  const svgY = Math.round(yPct * 200 * 10) / 10;
+  // Clamp inside pitch area
+  if (svgX < 4 || svgX > 296 || svgY < 4 || svgY > 196) return;
+  const type = document.getElementById('penalty-type-select').value;
+  const data = getSetPieceData(m);
+  data.penalties.push({ id: Date.now(), type, half: currentSetPieceHalf, x: svgX, y: svgY });
+  saveState();
+  renderSetPieces();
+}
+
+function clearPenaltyMap() {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const data = getSetPieceData(m);
+  // Only remove penalties that have map coordinates
+  data.penalties = data.penalties.filter(p => !p.x);
+  saveState();
+  renderSetPieces();
+}
+
+function renderPenaltyMap(penalties) {
+  const pinsEl = document.getElementById('penalty-pins');
+  const legendEl = document.getElementById('penalty-map-legend');
+  if (!pinsEl || !legendEl) return;
+
+  const pinned = penalties.filter(p => p.x !== undefined);
+
+  if (!pinned.length) {
+    pinsEl.innerHTML = '';
+    legendEl.innerHTML = '';
+    return;
+  }
+
+  // Draw pins
+  pinsEl.innerHTML = pinned.map((p, i) => {
+    const col = PENALTY_COLORS[p.type] || '#888';
+    const num = i + 1;
+    return `
+      <g onclick="deletePenaltyPin(${p.id})" style="cursor:pointer">
+        <circle cx="${p.x}" cy="${p.y}" r="7" fill="${col}" stroke="rgba(0,0,0,0.5)" stroke-width="1"/>
+        <text x="${p.x}" y="${p.y + 2.5}" text-anchor="middle" font-size="6" font-weight="bold"
+          font-family="sans-serif" fill="#0f0f0f">${num}</text>
+      </g>`;
+  }).join('');
+
+  // Build legend — unique types only
+  const seen = {};
+  pinned.forEach((p, i) => {
+    if (!seen[p.type]) seen[p.type] = { col: PENALTY_COLORS[p.type] || '#888', nums: [] };
+    seen[p.type].nums.push(i + 1);
+  });
+  legendEl.innerHTML = Object.entries(seen).map(([type, {col, nums}]) =>
+    `<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)">
+      <div style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0"></div>
+      <span>${type} <span style="color:var(--text3)">(${nums.join(', ')})</span></span>
+    </div>`
+  ).join('');
+}
+
+function deletePenaltyPin(id) {
+  const m = getCurrentMatch();
+  if (!m || !m.setPieces) return;
+  [1,2].forEach(h => {
+    if (m.setPieces[h]) m.setPieces[h].penalties = m.setPieces[h].penalties.filter(p => p.id !== id);
+  });
+  saveState();
+  renderSetPieces();
+}
+
+function addPenalty() {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const type = document.getElementById('penalty-type-select').value;
+  const data = getSetPieceData(m);
+  // Add without coords — list only (use pitch tap to place on map)
+  data.penalties.push({ id: Date.now(), type, half: currentSetPieceHalf });
+  saveState();
+  renderSetPieces();
+}
+
+function deletePenalty(id) {
+  const m = getCurrentMatch();
+  if (!m || !m.setPieces) return;
+  [1,2].forEach(h => {
+    if (m.setPieces[h]) m.setPieces[h].penalties = m.setPieces[h].penalties.filter(p => p.id !== id);
+  });
+  saveState();
+  renderSetPieces();
+}
+
+function addSimpleEvent(type) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const data = getSetPieceData(m);
+  if (!data[type]) data[type] = [];
+  data[type].push({ id: Date.now(), half: currentSetPieceHalf });
+  saveState();
+  renderSetPieces();
+}
+function removeSimpleEvent(type) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const data = getSetPieceData(m);
+  if (data[type] && data[type].length > 0) data[type].pop();
+  saveState();
+  renderSetPieces();
+}
+
+function renderSetPieces() {
+  const m = getCurrentMatch();
+  if (!m) return;
+  const data = getSetPieceData(m);
+
+  // Scrums
+  const s = data.scrums;
+  const sv = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  sv('sp-scrums-won',   s.won  || 0);
+  sv('sp-scrums-lost',  s.lost || 0);
+  const scrumTotal = (s.won||0) + (s.lost||0);
+  sv('sp-scrums-total', scrumTotal);
+  const scrumPctEl = document.getElementById('sp-scrums-pct');
+  if (scrumPctEl) scrumPctEl.textContent = scrumTotal > 0 ? Math.round((s.won||0)/scrumTotal*100) + '% won' : '—';
+
+  // Lineouts
+  const l = data.lineouts;
+  sv('sp-lineouts-won',   l.won  || 0);
+  sv('sp-lineouts-lost',  l.lost || 0);
+  const loTotal = (l.won||0) + (l.lost||0);
+  sv('sp-lineouts-total', loTotal);
+  const loPctEl = document.getElementById('sp-lineouts-pct');
+  if (loPctEl) loPctEl.textContent = loTotal > 0 ? Math.round((l.won||0)/loTotal*100) + '% won' : '—';
+
+  // Tackles
+  const t = data.tackles || { made:0, missed:0 };
+  sv('sp-tackles-made',   t.made   || 0);
+  sv('sp-tackles-missed', t.missed || 0);
+  const tackleTotal = (t.made||0) + (t.missed||0);
+  sv('sp-tackles-total', tackleTotal);
+  const tacklePctEl = document.getElementById('sp-tackles-pct');
+  if (tacklePctEl) tacklePctEl.textContent = tackleTotal > 0 ? Math.round((t.made||0)/tackleTotal*100) + '% success' : '—';
+
+  // Penalties log
+  const el = document.getElementById('penalty-log');
+  if (!data.penalties.length) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:4px 0">No penalties recorded this half.</div>';
+    renderPenaltyMap([]);
+    return;
+  }
+  const counts = {};
+  data.penalties.forEach(p => counts[p.type] = (counts[p.type]||0) + 1);
+  el.innerHTML = Object.entries(counts).map(([type, count]) => {
+    const col = PENALTY_COLORS[type] || '#888';
+    const ids = data.penalties.filter(p => p.type === type).map(p => p.id);
+    return `<div class="penalty-item">
+      <div style="width:10px;height:10px;border-radius:50%;background:${col};flex-shrink:0"></div>
+      <span style="flex:1;font-weight:500">${type}</span>
+      <span style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--orange)">×${count}</span>
+      <button class="note-del" onclick="deletePenalty(${ids[ids.length-1]})" title="Remove one">−1</button>
+    </div>`;
+  }).join('');
+  renderPenaltyMap(data.penalties);
+
+  // Simple event counters
+  const sv2 = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  sv2('sp-mauls-count',    (data.mauls    ||[]).length);
+  sv2('sp-kicks-count',    (data.kicks    ||[]).length);
+  sv2('sp-turnovers-count',(data.turnovers||[]).length);
+  sv2('sp-heldup-count',   (data.heldUp   ||[]).length);
+}
+function setNoteType(t) {
+  state.currentNoteType = t;
+  document.getElementById('ntype-pos').classList.toggle('active', t==='pos');
+  document.getElementById('ntype-neg').classList.toggle('active', t==='neg');
+}
+function addNote() {
+  const input = document.getElementById('note-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const m = getCurrentMatch();
+  if (!m) return;
+  m.notes[state.currentHalf].push({ id: Date.now(), type: state.currentNoteType, text });
+  input.value = '';
+  saveState();
+  renderNotes();
+}
+function deleteNote(noteId) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  [1,2].forEach(h => m.notes[h] = m.notes[h].filter(n => n.id !== noteId));
+  saveState();
+  renderNotes();
+}
+function renderNotes() {
+  const m = getCurrentMatch();
+  const el = document.getElementById('notes-list');
+  if (!m) { el.innerHTML = ''; return; }
+  const notes = m.notes[state.currentHalf];
+  if (!notes.length) { el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:4px 0">No notes for this half yet.</div>'; return; }
+  el.innerHTML = notes.map(n => `
+    <div class="note-item ${n.type}">
+      <span>${n.text}</span>
+      <button class="note-del" onclick="deleteNote(${n.id})">✕</button>
+    </div>
+  `).join('');
+}
 function endMatch() {
   const m = getCurrentMatch();
   if (!m) return;
   m.finished = true;
-  m.result = (m.scoreFor||0) > (m.scoreAgainst||0) ? 'W' : (m.scoreFor||0) < (m.scoreAgainst||0) ? 'L' : 'D';
+  m.result = m.scoreFor > m.scoreAgainst ? 'W' : m.scoreFor < m.scoreAgainst ? 'L' : 'D';
   saveState();
   closeModal('modal-end-match');
   renderMatchPage();
 }
-
 function reopenMatch() {
   const m = getCurrentMatch();
   if (!m) return;
-  m.finished = false; m.result = null;
+  m.finished = false;
+  m.result = null;
   saveState();
   renderMatchPage();
 }
-
-function renderMatchPage() {
-  const hasMatches = state.matches.length > 0;
-  document.getElementById('match-none').style.display = hasMatches ? 'none' : 'block';
-  const activeEl = document.getElementById('match-active');
-  if (hasMatches) {
-    activeEl.style.display = 'flex';
-    activeEl.style.flexDirection = 'column';
-  } else {
-    activeEl.style.display = 'none';
+function toggleMatchRoster() {
+  const toggle = document.getElementById('roster-toggle');
+  const body = document.getElementById('match-roster-body');
+  toggle.classList.toggle('open');
+  body.classList.toggle('open');
+}
+function selectAllMatchRoster() {
+  const m = getCurrentMatch();
+  if (!m) return;
+  if (!m.matchRoster) m.matchRoster = {};
+  state.players.forEach(p => {
+    if (!m.matchRoster[p.id]) m.matchRoster[p.id] = { selected: false, status: 'bench' };
+    m.matchRoster[p.id].selected = true;
+  });
+  saveState();
+  renderMatchRoster();
+}
+function toggleRosterPlayer(playerId) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  if (!m.matchRoster) m.matchRoster = {};
+  if (!m.matchRoster[playerId]) m.matchRoster[playerId] = { selected: false, status: 'bench' };
+  m.matchRoster[playerId].selected = !m.matchRoster[playerId].selected;
+  saveState();
+  renderMatchRoster();
+}
+function setRosterStatus(playerId, status) {
+  const m = getCurrentMatch();
+  if (!m || !m.matchRoster) return;
+  m.matchRoster[playerId].status = status;
+  saveState();
+  renderMatchRoster();
+}
+function renderMatchRoster() {
+  const m = getCurrentMatch();
+  const el = document.getElementById('match-roster-inner');
+  if (!m) { el.innerHTML = ''; return; }
+  if (!state.players.length) {
+    el.innerHTML = '<div style="padding:12px;color:var(--text3);font-size:13px">Add players in the Roster tab first.</div>';
+    return;
   }
-  if (!hasMatches) return;
+  if (!m.matchRoster) m.matchRoster = {};
+  // Ensure all players have an entry
+  state.players.forEach((p, i) => {
+    if (!m.matchRoster[p.id]) m.matchRoster[p.id] = { selected: true, status: i < 15 ? 'field' : 'bench' };
+  });
+  const selected = state.players.filter(p => m.matchRoster[p.id]?.selected);
+  const notSelected = state.players.filter(p => !m.matchRoster[p.id]?.selected);
+  const onField = selected.filter(p => m.matchRoster[p.id]?.status === 'field');
+  const bench = selected.filter(p => m.matchRoster[p.id]?.status === 'bench');
+  const playerRow = (p, inRoster) => {
+    const entry = m.matchRoster[p.id] || { selected: false, status: 'bench' };
+    const statusDot = inRoster
+      ? `<div class="roster-status-dot ${entry.status === 'field' ? 'on-field' : 'bench'}"></div>`
+      : `<div class="roster-status-dot not-playing"></div>`;
+    const statusToggle = inRoster ? `
+      <select onchange="setRosterStatus(${p.id}, this.value)" onclick="event.stopPropagation()"
+        style="width:auto;padding:3px 6px;font-size:12px;background:var(--surface2);border-color:var(--border)">
+        <option value="field" ${entry.status==='field'?'selected':''}>Starting</option>
+        <option value="bench" ${entry.status==='bench'?'selected':''}>Bench</option>
+      </select>` : '';
+    return `<div class="roster-player-row" onclick="toggleRosterPlayer(${p.id})">
+      <input type="checkbox" ${inRoster ? 'checked' : ''} onclick="event.stopPropagation();toggleRosterPlayer(${p.id})">
+      ${statusDot}
+      <span class="r-num">${p.num !== '—' ? p.num : '—'}</span>
+      <span class="r-name">${p.first} ${p.last}<br><span class="r-pos">${p.pos}</span></span>
+      ${statusToggle}
+    </div>`;
+  };
+  let html = '';
+  if (onField.length) {
+    html += `<div class="roster-section-label">⬤ Starting XV</div>`;
+    html += onField.map(p => playerRow(p, true)).join('');
+  }
+  if (bench.length) {
+    html += `<div class="roster-section-label" style="margin-top:4px">⬤ Bench</div>`;
+    html += bench.map(p => playerRow(p, true)).join('');
+  }
+  if (notSelected.length) {
+    html += `<div class="roster-section-label" style="margin-top:4px;color:var(--text3)">Not Playing</div>`;
+    html += notSelected.map(p => playerRow(p, false)).join('');
+  }
+  el.innerHTML = html;
+}
+function populateSubSelects() {
+  const m = getCurrentMatch();
+  // Build current on-field list: started + came on via subs, minus those subbed off
+  let onField = [];
+  let onBench = [];
+  if (m && m.matchRoster && state.players.length) {
+    // Start with roster
+    const rosterPlayers = state.players.filter(p => m.matchRoster[p.id]?.selected);
+    // Track who's currently on field based on subs
+    const subbedOff = new Set(m.subs.map(s => s.offId));
+    const subbedOn = new Set(m.subs.map(s => s.onId));
+    rosterPlayers.forEach(p => {
+      const entry = m.matchRoster[p.id];
+      if (entry.status === 'field') {
+        // Started — on field unless subbed off
+        if (!subbedOff.has(p.id)) onField.push(p);
+      } else if (entry.status === 'bench') {
+        // On bench — on field if subbed on AND not subbed off again
+        if (subbedOn.has(p.id) && !subbedOff.has(p.id)) onField.push(p);
+        else if (!subbedOn.has(p.id)) onBench.push(p);
+      }
+    });
+  } else {
+    // Fallback: all players
+    onField = [...state.players];
+    onBench = [...state.players];
+  }
+  const makeOpts = (players, fallback) => players.length
+    ? players.map(p => `<option value="${p.id}">${p.num !== '—' ? '#'+p.num+' ' : ''}${p.first} ${p.last}</option>`).join('')
+    : `<option value="">${fallback}</option>`;
+  document.getElementById('sub-off').innerHTML = makeOpts(onField, 'No players on field');
+  document.getElementById('sub-on').innerHTML = makeOpts(onBench, 'No players on bench');
+}
+function recordSub() {
+  const min = parseInt(document.getElementById('sub-min').value);
+  const offId = parseInt(document.getElementById('sub-off').value);
+  const onId = parseInt(document.getElementById('sub-on').value);
+  if (!min || min < 1) return alert('Enter a valid minute.');
+  if (!offId || !onId) return alert('Please select valid players.');
+  if (offId === onId) return alert('On and Off cannot be the same player.');
+  const m = getCurrentMatch();
+  if (!m) return;
+  m.subs.push({ id: Date.now(), min, offId, onId });
+  m.subs.sort((a,b) => a.min - b.min);
+  // Update lineup for stats
+  if (!m.lineup) m.lineup = {};
+  if (!m.lineup[offId]) m.lineup[offId] = { start: false, onAt: 0, offAt: null };
+  m.lineup[offId].offAt = min;
+  if (!m.lineup[onId]) m.lineup[onId] = { start: false, onAt: min, offAt: null };
+  else m.lineup[onId].onAt = min;
+  saveState();
+  closeModal('modal-add-sub');
+  document.getElementById('sub-min').value = '';
+  renderSubs();
+  renderMatchRoster();
+}
+function deleteSub(subId) {
+  const m = getCurrentMatch();
+  if (!m) return;
+  m.subs = m.subs.filter(s => s.id !== subId);
+  saveState();
+  renderSubs();
+}
+function renderSubs() {
+  const m = getCurrentMatch();
+  const el = document.getElementById('subs-list');
+  if (!m || !m.subs.length) { el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:4px 0">No substitutions recorded.</div>'; return; }
+  el.innerHTML = m.subs.map(s => {
+    const off = state.players.find(p => p.id === s.offId);
+    const on = state.players.find(p => p.id === s.onId);
+    return `
+      <div class="sub-item">
+        <div class="sub-min">${s.min}'</div>
+        <div style="flex:1">
+          <div style="color:var(--red);font-size:14px">▼ ${off ? off.first+' '+off.last : 'Unknown'}</div>
+          <div style="color:var(--green);font-size:14px">▲ ${on ? on.first+' '+on.last : 'Unknown'}</div>
+        </div>
+        <button class="btn icon-btn sm" onclick="deleteSub(${s.id})">✕</button>
+      </div>
+    `;
+  }).join('');
+}
+function renderMatchPage() {
+  const hasMaches = state.matches.length > 0;
+  document.getElementById('match-none').style.display = hasMaches ? 'none' : 'block';
+  document.getElementById('match-active').style.display = hasMaches ? 'block' : 'none';
+  if (!hasMaches) return;
+  // Populate select
   const sel = document.getElementById('match-select');
-  sel.innerHTML = state.matches.map(m => `<option value="${m.id}" ${m.id===state.currentMatchId?'selected':''}>
-    ${formatDate(m.date)} vs ${m.opp} (${m.loc})${m.finished?' ✓':''}</option>`).join('');
+  sel.innerHTML = state.matches.map(m => `<option value="${m.id}" ${m.id===state.currentMatchId?'selected':''} >${formatDate(m.date)} vs ${m.opp} (${m.loc})</option>`).join('');
   if (!state.currentMatchId) state.currentMatchId = state.matches[0].id;
   const m = getCurrentMatch();
   if (!m) return;
   document.getElementById('match-vs-label').textContent = `${m.loc} vs ${m.opp}`;
-  updateScoreDisplay();
-  // Result banner
-  const banner = document.getElementById('match-result-banner');
-  const qlBar  = document.getElementById('quick-log-bar');
+  document.getElementById('match-score-display').textContent = `${m.scoreFor} — ${m.scoreAgainst}`;
+
+  // End match / result state
+  const endSection = document.getElementById('end-match-section');
+  const resultBanner = document.getElementById('match-result-banner');
   if (m.finished) {
-    const result = m.result==='W'?'WIN':m.result==='L'?'LOSS':'DRAW';
-    const col = m.result==='W'?'var(--green)':m.result==='L'?'var(--red)':'var(--text2)';
-    banner.style.display = 'block';
-    banner.innerHTML = `<div style="background:var(--surface);border:1px solid ${col};border-radius:var(--radius);padding:10px;display:flex;align-items:center;justify-content:space-between">
-      <div>
-        <div style="font-family:var(--font-display);font-size:11px;color:var(--text3);letter-spacing:1px;text-transform:uppercase">Final Result</div>
-        <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:${col}">${result} ${m.scoreFor||0}–${m.scoreAgainst||0}</div>
-      </div>
-      <button onclick="reopenMatch()" class="btn secondary sm">↩ Reopen</button>
+    endSection.style.display = 'none';
+    const result = m.result === 'W' ? 'WIN' : m.result === 'L' ? 'LOSS' : 'DRAW';
+    const col = m.result === 'W' ? 'var(--green)' : m.result === 'L' ? 'var(--red)' : 'var(--text2)';
+    const bg  = m.result === 'W' ? 'rgba(48,209,88,.08)' : m.result === 'L' ? 'rgba(255,59,48,.08)' : 'var(--surface2)';
+    resultBanner.style.display = 'block';
+    resultBanner.innerHTML = `<div style="background:${bg};border:1px solid ${col};border-radius:var(--radius);padding:12px;text-align:center;margin-bottom:12px">
+      <div style="font-family:var(--font-display);font-size:13px;letter-spacing:2px;color:var(--text2);text-transform:uppercase">Final Result</div>
+      <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent);margin:2px 0">${m.scoreFor} — ${m.scoreAgainst}</div>
+      <div style="font-family:var(--font-display);font-size:20px;font-weight:900;letter-spacing:3px;color:${col}">${result}</div>
+      <button onclick="reopenMatch()" class="btn secondary" style="margin-top:10px;font-size:12px;padding:7px 16px;opacity:0.7">↩ Reopen Match</button>
     </div>`;
-    qlBar.style.display = 'none';
   } else {
-    banner.style.display = 'none';
-    qlBar.style.display = 'block';
+    endSection.style.display = 'block';
+    resultBanner.style.display = 'none';
   }
-  renderEventLog();
-  renderQuickLog();
+
+  renderNotes();
+  renderSubs();
+  renderMatchRoster();
+  renderScoreLog();
+  renderSetPieces();
 }
 
 // ============ STATS ============
@@ -2173,28 +2401,34 @@ function computePlayerMinutes() {
   state.players.forEach(p => minutesMap[p.id] = 0);
   state.matches.forEach(m => {
     const MATCH_DURATION = 80;
+    // figure out minutes for each player
     const played = {};
-    // Build lineup from sub events if m.lineup not populated
-    const subEvents = (m.events||[]).filter(e=>e.key==='sub').sort((a,b)=>(a.detail?.minute||0)-(b.detail?.minute||0));
-    // Seed lineup: matchRoster starters start at 0
-    if (m.matchRoster) {
-      Object.entries(m.matchRoster).forEach(([pid,entry]) => {
-        if (entry.selected && entry.status==='field') played[pid] = played[pid]||{onAt:0,offAt:MATCH_DURATION};
-      });
-    } else if (m.lineup) {
-      Object.entries(m.lineup).forEach(([pid,info]) => {
-        played[pid] = {onAt:info.onAt??0, offAt:info.offAt??MATCH_DURATION};
+    // Start: all players in lineup with start:true start at 0
+    if (m.lineup) {
+      Object.entries(m.lineup).forEach(([pid, info]) => {
+        const player = state.players.find(p => p.id === parseInt(pid));
+        if (!player) return;
+        const onAt = info.onAt ?? 0;
+        const offAt = info.offAt ?? MATCH_DURATION;
+        const mins = Math.max(0, offAt - onAt);
+        if (!played[pid]) played[pid] = 0;
+        played[pid] += mins;
       });
     }
-    // Apply sub events
-    subEvents.forEach(e => {
-      const {offId,onId,minute} = e.detail||{};
-      if (offId && played[offId]) played[offId].offAt = minute||MATCH_DURATION;
-      if (onId) played[onId] = {onAt:minute||0, offAt:MATCH_DURATION};
+    // Also process subs for players not in lineup
+    m.subs && m.subs.forEach(s => {
+      // player going ON: if not already tracked
+      if (played[s.onId] === undefined || played[s.onId] === 0) {
+        // find if they went off later
+        const laterOff = m.subs.find(s2 => s2.offId === s.onId && s2.min > s.min);
+        const offAt = laterOff ? laterOff.min : MATCH_DURATION;
+        if (!played[s.onId]) played[s.onId] = 0;
+        // only add if not already covered by lineup
+        if (!m.lineup || !m.lineup[s.onId]) played[s.onId] += offAt - s.min;
+      }
     });
-    Object.entries(played).forEach(([pid,{onAt,offAt}]) => {
-      const mins = Math.max(0,(offAt||MATCH_DURATION)-(onAt||0));
-      if (minutesMap[parseInt(pid)]!==undefined) minutesMap[parseInt(pid)] += mins;
+    Object.entries(played).forEach(([pid, mins]) => {
+      if (minutesMap[parseInt(pid)] !== undefined) minutesMap[parseInt(pid)] += mins;
     });
   });
   return minutesMap;
@@ -2207,6 +2441,7 @@ function renderStats() {
   }
   const minutesMap = computePlayerMinutes();
   const maxMins = Math.max(...Object.values(minutesMap), 1);
+  const totalMatches = state.matches.length;
   const attMap = {};
   state.players.forEach(p => attMap[p.id] = 0);
   state.sessions.forEach(s => {
@@ -2220,35 +2455,46 @@ function renderStats() {
   const losses = finishedMatches.filter(m => m.result === 'L').length;
   const draws  = finishedMatches.filter(m => m.result === 'D').length;
 
-  // Aggregate event-based stats per match
-  const matchRows = state.matches.filter(m => m.events && m.events.length).map(m => {
-    const evs = m.events || [];
-    const cnt = k => evs.filter(e => e.key === k).length;
-    const scrumW = cnt('scrum_w'), scrumL = cnt('scrum_l');
-    const loW    = cnt('lineout_w'), loL = cnt('lineout_l');
-    const tmade  = cnt('tackle_m'), tmiss = cnt('tackle_l');
-    const scrumTotal = scrumW + scrumL, loTotal = loW + loL, tackleTotal = tmade + tmiss;
-    return {
-      m,
-      scrumW, scrumL, scrumPct:  scrumTotal  > 0 ? Math.round(scrumW/scrumTotal*100)  : null,
-      loW,    loL,    loPct:     loTotal     > 0 ? Math.round(loW/loTotal*100)        : null,
-      tmade,  tmiss,  tacklePct: tackleTotal > 0 ? Math.round(tmade/tackleTotal*100)  : null,
-      tries: cnt('try'), penalties: cnt('penalty'), turnovers: cnt('turnover'),
-    };
+  // Aggregate set piece + tackle stats across all matches
+  let totScrumWon=0, totScrumTotal=0, totLoWon=0, totLoTotal=0;
+  let totTackleMade=0, totTackleMissed=0;
+  const matchSetPieceRows = state.matches.filter(m => m.setPieces).map(m => {
+    let mScrumWon=0, mScrumLost=0, mScrumTotal=0, mLoWon=0, mLoLost=0, mLoTotal=0, mTMade=0, mTMissed=0;
+    [1,2].forEach(h => {
+      const d = m.setPieces[h];
+      if (!d) return;
+      const s = d.scrums || {};
+      mScrumWon   += (s.won||0);
+      mScrumLost  += (s.lost||0);
+      mScrumTotal += (s.won||0) + (s.lost||0);
+      const l = d.lineouts || {};
+      mLoWon   += (l.won||0);
+      mLoLost  += (l.lost||0);
+      mLoTotal += (l.won||0) + (l.lost||0);
+      const t = d.tackles || {};
+      mTMade   += (t.made||0);
+      mTMissed += (t.missed||0);
+    });
+    totScrumWon += mScrumWon; totScrumTotal += mScrumTotal;
+    totLoWon += mLoWon; totLoTotal += mLoTotal;
+    totTackleMade += mTMade; totTackleMissed += mTMissed;
+    const scrumPct  = mScrumTotal  > 0 ? Math.round(mScrumWon/mScrumTotal*100)   : null;
+    const loPct     = mLoTotal     > 0 ? Math.round(mLoWon/mLoTotal*100)          : null;
+    const tacklePct = (mTMade+mTMissed) > 0 ? Math.round(mTMade/(mTMade+mTMissed)*100) : null;
+    return { m, scrumPct, loPct, tacklePct, mScrumWon, mScrumLost, mScrumTotal, mLoWon, mLoLost, mLoTotal, mTMade, mTMissed };
   });
-
-  // Season aggregates
-  const totSW  = matchRows.reduce((s,r)=>s+r.scrumW,0),  totST = matchRows.reduce((s,r)=>s+r.scrumW+r.scrumL,0);
-  const totLW  = matchRows.reduce((s,r)=>s+r.loW,0),     totLT = matchRows.reduce((s,r)=>s+r.loW+r.loL,0);
-  const totTM  = matchRows.reduce((s,r)=>s+r.tmade,0),   totTT = matchRows.reduce((s,r)=>s+r.tmade+r.tmiss,0);
 
   const pctBar = (pct, color) => pct === null ? '<span style="color:var(--text3);font-size:12px">—</span>' :
     `<div style="display:flex;align-items:center;gap:6px">
-      <div style="flex:1;background:var(--surface2);border-radius:3px;height:5px;min-width:50px">
+      <div style="flex:1;background:var(--surface2);border-radius:3px;height:5px;min-width:60px">
         <div style="width:${pct}%;height:5px;border-radius:3px;background:${color}"></div>
       </div>
-      <span style="font-family:var(--font-display);font-size:13px;font-weight:700;color:${color};min-width:32px">${pct}%</span>
+      <span style="font-family:var(--font-display);font-size:13px;font-weight:700;color:${color};min-width:36px">${pct}%</span>
     </div>`;
+
+  const seasonScrumPct  = totScrumTotal  > 0 ? Math.round(totScrumWon/totScrumTotal*100)           : null;
+  const seasonLoPct     = totLoTotal     > 0 ? Math.round(totLoWon/totLoTotal*100)                  : null;
+  const seasonTacklePct = (totTackleMade+totTackleMissed) > 0 ? Math.round(totTackleMade/(totTackleMade+totTackleMissed)*100) : null;
 
   el.innerHTML = `
     <div class="card" style="margin-bottom:14px">
@@ -2257,62 +2503,56 @@ function renderStats() {
         <div style="text-align:center"><div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--green)">${wins}</div><div style="font-size:12px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px">WINS</div></div>
         <div style="text-align:center"><div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--red)">${losses}</div><div style="font-size:12px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px">LOSSES</div></div>
         <div style="text-align:center"><div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--text2)">${draws}</div><div style="font-size:12px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px">DRAWS</div></div>
-        <div style="text-align:center;margin-left:auto"><div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)">${state.matches.length}</div><div style="font-size:12px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px">MATCHES</div></div>
+        <div style="text-align:center;margin-left:auto"><div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)">${totalMatches}</div><div style="font-size:12px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px">MATCHES</div></div>
       </div>
     </div>
 
-    ${matchRows.length ? `
+    ${matchSetPieceRows.length ? `
     <div class="card" style="margin-bottom:14px">
       <div class="card-label" style="margin-bottom:2px">Season Averages</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px">
         <div style="text-align:center;background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
-          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--accent)">${totST>0?Math.round(totSW/totST*100)+'%':'—'}</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--accent)">${seasonScrumPct !== null ? seasonScrumPct+'%' : '—'}</div>
           <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Scrum Win</div>
         </div>
         <div style="text-align:center;background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
-          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--accent)">${totLT>0?Math.round(totLW/totLT*100)+'%':'—'}</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--accent)">${seasonLoPct !== null ? seasonLoPct+'%' : '—'}</div>
           <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Lineout Win</div>
         </div>
         <div style="text-align:center;background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
-          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--accent)">${totTT>0?Math.round(totTM/totTT*100)+'%':'—'}</div>
+          <div style="font-family:var(--font-display);font-size:22px;font-weight:900;color:var(--accent)">${seasonTacklePct !== null ? seasonTacklePct+'%' : '—'}</div>
           <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;margin-top:2px">Tackle %</div>
         </div>
       </div>
     </div>
 
     <div class="card" style="margin-bottom:14px">
-      <div class="card-label" style="margin-bottom:12px">Per Match</div>
-      ${matchRows.map(({m,scrumPct,loPct,tacklePct,scrumW,scrumL,loW,loL,tmade,tmiss,tries,penalties,turnovers}) => {
-        const result = m.finished ? (m.result==='W'?'<span style="color:var(--green);font-weight:700">W</span>':m.result==='L'?'<span style="color:var(--red);font-weight:700">L</span>':'<span style="color:var(--text2)">D</span>') : '';
-        return `<div style="padding:10px 0;border-bottom:1px solid var(--border)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-            <span style="font-family:var(--font-display);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">${m.opp} ${result}</span>
-            <span style="font-size:11px;color:var(--text2)">${m.scoreFor||0}–${m.scoreAgainst||0} · ${formatDate(m.date)}</span>
+      <div class="card-label" style="margin-bottom:12px">Per Match — Set Pieces & Tackles</div>
+      ${matchSetPieceRows.map(({m, scrumPct, loPct, tacklePct, mScrumWon, mScrumLost, mScrumTotal, mLoWon, mLoLost, mLoTotal, mTMade, mTMissed}) => `
+        <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+            <span style="font-family:var(--font-display);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px">${m.opp}</span>
+            <span style="font-size:12px;color:var(--text2)">${formatDate(m.date)}</span>
           </div>
-          <div style="display:flex;gap:8px;margin-bottom:5px;flex-wrap:wrap">
-            <span style="font-size:11px;background:rgba(0,230,118,0.1);color:var(--accent);padding:2px 7px;border-radius:4px">${tries} tries</span>
-            <span style="font-size:11px;background:rgba(255,59,48,0.1);color:var(--red);padding:2px 7px;border-radius:4px">${penalties} pen.</span>
-            <span style="font-size:11px;background:rgba(136,136,136,0.1);color:var(--text2);padding:2px 7px;border-radius:4px">${turnovers} turnovers</span>
-          </div>
-          <div style="display:grid;gap:4px">
+          <div style="display:grid;gap:5px">
             <div style="display:flex;align-items:center;gap:8px">
               <span style="font-size:11px;color:var(--text3);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;width:62px;flex-shrink:0">Scrums</span>
-              ${pctBar(scrumPct,'var(--accent)')}
-              <span style="font-size:11px;flex-shrink:0"><span style="color:var(--accent)">${scrumW}W</span><span style="color:var(--text3)"> / ${scrumL}L</span></span>
+              ${pctBar(scrumPct, 'var(--accent)')}
+              <span style="font-size:11px;flex-shrink:0"><span style="color:var(--accent);font-weight:700">${mScrumWon}W</span> <span style="color:var(--text3)">/ ${mScrumLost}L</span></span>
             </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span style="font-size:11px;color:var(--text3);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;width:62px;flex-shrink:0">Lineouts</span>
-              ${pctBar(loPct,'var(--blue)')}
-              <span style="font-size:11px;flex-shrink:0"><span style="color:var(--accent)">${loW}W</span><span style="color:var(--text3)"> / ${loL}L</span></span>
+              ${pctBar(loPct, 'var(--blue)')}
+              <span style="font-size:11px;flex-shrink:0"><span style="color:var(--accent);font-weight:700">${mLoWon}W</span> <span style="color:var(--text3)">/ ${mLoLost}L</span></span>
             </div>
             <div style="display:flex;align-items:center;gap:8px">
               <span style="font-size:11px;color:var(--text3);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;width:62px;flex-shrink:0">Tackles</span>
-              ${pctBar(tacklePct,'var(--orange)')}
-              <span style="font-size:11px;flex-shrink:0"><span style="color:var(--accent)">${tmade}M</span><span style="color:var(--text3)"> / ${tmiss}L</span></span>
+              ${pctBar(tacklePct, 'var(--orange)')}
+              <span style="font-size:11px;flex-shrink:0"><span style="color:var(--accent);font-weight:700">${mTMade}W</span> <span style="color:var(--text3)">/ ${mTMissed}L</span></span>
             </div>
           </div>
-        </div>`;
-      }).join('')}
+        </div>
+      `).join('')}
     </div>` : ''}
 
     <div class="card" style="margin-bottom:14px">
@@ -2330,7 +2570,7 @@ function renderStats() {
       }).join('')}
     </div>
 
-    ${totalSessions > 0 ? `<div class="card" style="margin-bottom:14px">
+    ${totalSessions > 0 ? `<div class="card">
       <div class="card-label" style="margin-bottom:10px">Training Attendance (${totalSessions} sessions)</div>
       ${state.players.sort((a,b) => (attMap[b.id]||0)-(attMap[a.id]||0)).map(p => {
         const att = attMap[p.id] || 0;
@@ -2346,21 +2586,6 @@ function renderStats() {
     </div>` : ''}
   `;
 }
-  const maxMins = Math.max(...Object.values(minutesMap), 1);
-  const totalMatches = state.matches.length;
-  const attMap = {};
-  state.players.forEach(p => attMap[p.id] = 0);
-  state.sessions.forEach(s => {
-    Object.entries(s.attendance).forEach(([pid, present]) => {
-      if (present && attMap[parseInt(pid)] !== undefined) attMap[parseInt(pid)]++;
-    });
-  });
-  const totalSessions = state.sessions.length;
-  const finishedMatches = state.matches.filter(m => m.finished);
-  const wins   = finishedMatches.filter(m => m.result === 'W').length;
-  const losses = finishedMatches.filter(m => m.result === 'L').length;
-  const draws  = finishedMatches.filter(m => m.result === 'D').length;
-
 
 // ============ UTILS ============
 function formatDate(dateStr) {
