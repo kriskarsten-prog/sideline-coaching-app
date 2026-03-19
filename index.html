@@ -1167,48 +1167,26 @@
         <div class="card-label">Scrums</div>
         <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--accent)" id="sp-scrums-pct">—</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
-          <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Our Ball</div>
-          <div style="display:flex;justify-content:space-around">
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;font-weight:700">WON</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','ourWon',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-scrums-ourWon">0</span>
-                <button class="counter-btn accent" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','ourWon',1)">+</button>
-              </div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;font-weight:700">LOST</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','ourLost',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-scrums-ourLost">0</span>
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','ourLost',1)">+</button>
-              </div>
-            </div>
+      <div style="display:flex;gap:16px">
+        <div>
+          <div style="font-size:11px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Won</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('scrums','won',-1)">−</button>
+            <span class="counter-val" id="sp-scrums-won">0</span>
+            <button class="counter-btn accent" onclick="adjustSetPiece('scrums','won',1)">+</button>
           </div>
         </div>
-        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border);min-width:0;overflow:hidden">
-          <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Their Ball</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">LOST</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
-                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirLost',-1)">−</button>
-                <span class="counter-val" style="font-size:18px" id="sp-scrums-theirLost">0</span>
-                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirLost',1)">+</button>
-              </div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">STOLEN</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
-                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirStolen',-1)">−</button>
-                <span class="counter-val" style="font-size:18px" id="sp-scrums-theirStolen">0</span>
-                <button class="counter-btn accent" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirStolen',1)">+</button>
-              </div>
-            </div>
+        <div>
+          <div style="font-size:11px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Lost</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('scrums','lost',-1)">−</button>
+            <span class="counter-val" id="sp-scrums-lost">0</span>
+            <button class="counter-btn" onclick="adjustSetPiece('scrums','lost',1)">+</button>
           </div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="card-label">Total</div>
+          <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)" id="sp-scrums-total">0</div>
         </div>
       </div>
     </div>
@@ -1219,48 +1197,26 @@
         <div class="card-label">Lineouts</div>
         <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--accent)" id="sp-lineouts-pct">—</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
-          <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Our Ball</div>
-          <div style="display:flex;justify-content:space-around">
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;font-weight:700">WON</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','ourWon',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-lineouts-ourWon">0</span>
-                <button class="counter-btn accent" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','ourWon',1)">+</button>
-              </div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;font-weight:700">LOST</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','ourLost',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-lineouts-ourLost">0</span>
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','ourLost',1)">+</button>
-              </div>
-            </div>
+      <div style="display:flex;gap:16px">
+        <div>
+          <div style="font-size:11px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Won</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('lineouts','won',-1)">−</button>
+            <span class="counter-val" id="sp-lineouts-won">0</span>
+            <button class="counter-btn accent" onclick="adjustSetPiece('lineouts','won',1)">+</button>
           </div>
         </div>
-        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border);min-width:0;overflow:hidden">
-          <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Their Ball</div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">LOST</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
-                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirLost',-1)">−</button>
-                <span class="counter-val" style="font-size:18px" id="sp-lineouts-theirLost">0</span>
-                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirLost',1)">+</button>
-              </div>
-            </div>
-            <div style="text-align:center">
-              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">STOLEN</div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
-                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirStolen',-1)">−</button>
-                <span class="counter-val" style="font-size:18px" id="sp-lineouts-theirStolen">0</span>
-                <button class="counter-btn accent" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirStolen',1)">+</button>
-              </div>
-            </div>
+        <div>
+          <div style="font-size:11px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Lost</div>
+          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+            <button class="counter-btn" onclick="adjustSetPiece('lineouts','lost',-1)">−</button>
+            <span class="counter-val" id="sp-lineouts-lost">0</span>
+            <button class="counter-btn" onclick="adjustSetPiece('lineouts','lost',1)">+</button>
           </div>
+        </div>
+        <div style="margin-left:auto;text-align:right">
+          <div class="card-label">Total</div>
+          <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)" id="sp-lineouts-total">0</div>
         </div>
       </div>
     </div>
@@ -2126,27 +2082,21 @@ function renderSetPieces() {
   // Scrums
   const s = data.scrums;
   const sv = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
-  sv('sp-scrums-ourWon',    s.ourWon    || 0);
-  sv('sp-scrums-ourLost',   s.ourLost   || 0);
-  sv('sp-scrums-theirLost', s.theirLost || 0);
-  sv('sp-scrums-theirStolen', s.theirStolen || 0);
-  const scrumOwn = (s.ourWon||0) + (s.ourLost||0);
-  const scrumWon = (s.ourWon||0) + (s.theirStolen||0);
-  const scrumTotal = scrumOwn + (s.theirLost||0) + (s.theirStolen||0);
+  sv('sp-scrums-won',   s.won  || 0);
+  sv('sp-scrums-lost',  s.lost || 0);
+  const scrumTotal = (s.won||0) + (s.lost||0);
+  sv('sp-scrums-total', scrumTotal);
   const scrumPctEl = document.getElementById('sp-scrums-pct');
-  if (scrumPctEl) scrumPctEl.textContent = scrumTotal > 0 ? Math.round(scrumWon/scrumTotal*100) + '% won' : '—';
+  if (scrumPctEl) scrumPctEl.textContent = scrumTotal > 0 ? Math.round((s.won||0)/scrumTotal*100) + '% won' : '—';
 
   // Lineouts
   const l = data.lineouts;
-  sv('sp-lineouts-ourWon',    l.ourWon    || 0);
-  sv('sp-lineouts-ourLost',   l.ourLost   || 0);
-  sv('sp-lineouts-theirLost', l.theirLost || 0);
-  sv('sp-lineouts-theirStolen', l.theirStolen || 0);
-  const loOwn = (l.ourWon||0) + (l.ourLost||0);
-  const loWon = (l.ourWon||0) + (l.theirStolen||0);
-  const loTotal = loOwn + (l.theirLost||0) + (l.theirStolen||0);
+  sv('sp-lineouts-won',   l.won  || 0);
+  sv('sp-lineouts-lost',  l.lost || 0);
+  const loTotal = (l.won||0) + (l.lost||0);
+  sv('sp-lineouts-total', loTotal);
   const loPctEl = document.getElementById('sp-lineouts-pct');
-  if (loPctEl) loPctEl.textContent = loTotal > 0 ? Math.round(loWon/loTotal*100) + '% won' : '—';
+  if (loPctEl) loPctEl.textContent = loTotal > 0 ? Math.round((l.won||0)/loTotal*100) + '% won' : '—';
 
   // Tackles
   const t = data.tackles || { made:0, missed:0 };
@@ -2514,13 +2464,13 @@ function renderStats() {
       const d = m.setPieces[h];
       if (!d) return;
       const s = d.scrums || {};
-      mScrumWon   += (s.ourWon||0) + (s.theirStolen||0);
-      mScrumLost  += (s.ourLost||0) + (s.theirLost||0);
-      mScrumTotal += (s.ourWon||0) + (s.ourLost||0) + (s.theirLost||0) + (s.theirStolen||0);
+      mScrumWon   += (s.won||0);
+      mScrumLost  += (s.lost||0);
+      mScrumTotal += (s.won||0) + (s.lost||0);
       const l = d.lineouts || {};
-      mLoWon   += (l.ourWon||0) + (l.theirStolen||0);
-      mLoLost  += (l.ourLost||0) + (l.theirLost||0);
-      mLoTotal += (l.ourWon||0) + (l.ourLost||0) + (l.theirLost||0) + (l.theirStolen||0);
+      mLoWon   += (l.won||0);
+      mLoLost  += (l.lost||0);
+      mLoTotal += (l.won||0) + (l.lost||0);
       const t = d.tackles || {};
       mTMade   += (t.made||0);
       mTMissed += (t.missed||0);
