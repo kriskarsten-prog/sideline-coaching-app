@@ -1088,86 +1088,77 @@
       </div>
     </div>
 
-    <!-- Tackles -->
+    <!-- Quick Counters -->
     <div class="card" style="margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div class="card-label">Tackles</div>
-        <div style="font-family:var(--font-display);font-size:13px;font-weight:700;color:var(--accent)" id="sp-tackles-pct">—</div>
-      </div>
-      <div style="display:flex;gap:16px">
-        <div>
-          <div style="font-size:11px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Made</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-            <button class="counter-btn" onclick="adjustSetPiece('tackles','made',-1)">−</button>
-            <span class="counter-val" id="sp-tackles-made">0</span>
-            <button class="counter-btn accent" onclick="adjustSetPiece('tackles','made',1)">+</button>
+      <div class="card-label" style="margin-bottom:12px">Match Events</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+
+        <!-- Tackles Made -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Tackles Made</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="sp-tackles-made">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','made',1)">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="adjustSetPiece('tackles','made',-1)">−</button>
           </div>
         </div>
-        <div>
-          <div style="font-size:11px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700">Missed</div>
-          <div style="display:flex;align-items:center;gap:8px;margin-top:4px">
-            <button class="counter-btn" onclick="adjustSetPiece('tackles','missed',-1)">−</button>
-            <span class="counter-val" id="sp-tackles-missed">0</span>
-            <button class="counter-btn" onclick="adjustSetPiece('tackles','missed',1)">+</button>
+
+        <!-- Tackles Missed -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Tackles Missed</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--red);line-height:1" id="sp-tackles-missed">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn danger" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','missed',1)">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="adjustSetPiece('tackles','missed',-1)">−</button>
           </div>
         </div>
-        <div style="margin-left:auto;text-align:right">
-          <div class="card-label">Total</div>
-          <div style="font-family:var(--font-display);font-size:28px;font-weight:900;color:var(--accent)" id="sp-tackles-total">0</div>
-        </div>
-      </div>
-    </div>
 
-    <!-- Mauls -->
-    <div class="card" style="margin-bottom:8px">
-      <div class="card-label" style="margin-bottom:8px">Maul Formed</div>
-      <div style="display:flex;gap:8px;align-items:flex-end">
-        <div style="flex:1">
-          <label style="font-size:11px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px">Player</label>
-          <select id="maul-player-select" style="font-size:13px;padding:8px 10px"></select>
+        <!-- Mauls -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--blue);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Maul Formed</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--blue);line-height:1" id="sp-mauls-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--blue);border-color:var(--blue)" onclick="addSimpleEvent('mauls')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('mauls')">−</button>
+          </div>
         </div>
-        <button class="btn" style="padding:8px 14px;white-space:nowrap" onclick="addEvent('mauls')">+ Add</button>
-      </div>
-      <div id="maul-log" style="margin-top:10px"></div>
-    </div>
 
-    <!-- Open Play Kicks -->
-    <div class="card" style="margin-bottom:8px">
-      <div class="card-label" style="margin-bottom:8px">Open Play Kicks</div>
-      <div style="display:flex;gap:8px;align-items:flex-end">
-        <div style="flex:1">
-          <label style="font-size:11px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px">Player</label>
-          <select id="kick-player-select" style="font-size:13px;padding:8px 10px"></select>
+        <!-- Open Play Kicks -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--orange);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Open Play Kick</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--orange);line-height:1" id="sp-kicks-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--orange);border-color:var(--orange);color:#0f0f0f" onclick="addSimpleEvent('kicks')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('kicks')">−</button>
+          </div>
         </div>
-        <button class="btn" style="padding:8px 14px;white-space:nowrap" onclick="addEvent('kicks')">+ Add</button>
-      </div>
-      <div id="kick-log" style="margin-top:10px"></div>
-    </div>
 
-    <!-- Turnovers -->
-    <div class="card" style="margin-bottom:8px">
-      <div class="card-label" style="margin-bottom:8px">Turnovers Created</div>
-      <div style="display:flex;gap:8px;align-items:flex-end">
-        <div style="flex:1">
-          <label style="font-size:11px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px">Player</label>
-          <select id="turnover-player-select" style="font-size:13px;padding:8px 10px"></select>
+        <!-- Turnovers -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Turnover Created</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="sp-turnovers-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="addSimpleEvent('turnovers')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('turnovers')">−</button>
+          </div>
         </div>
-        <button class="btn" style="padding:8px 14px;white-space:nowrap" onclick="addEvent('turnovers')">+ Add</button>
-      </div>
-      <div id="turnover-log" style="margin-top:10px"></div>
-    </div>
 
-    <!-- Ball Held Up -->
-    <div class="card" style="margin-bottom:8px">
-      <div class="card-label" style="margin-bottom:8px">Ball Held Up</div>
-      <div style="display:flex;gap:8px;align-items:flex-end">
-        <div style="flex:1">
-          <label style="font-size:11px;color:var(--text2);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase;font-weight:700;display:block;margin-bottom:5px">Player</label>
-          <select id="heldup-player-select" style="font-size:13px;padding:8px 10px"></select>
+        <!-- Ball Held Up -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Ball Held Up</div>
+          <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--text);line-height:1" id="sp-heldup-count">0</div>
+          <div style="display:flex;gap:6px;width:100%">
+            <button class="btn secondary" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;border-color:var(--text2);color:var(--text)" onclick="addSimpleEvent('heldUp')">+</button>
+            <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('heldUp')">−</button>
+          </div>
         </div>
-        <button class="btn" style="padding:8px 14px;white-space:nowrap" onclick="addEvent('heldUp')">+ Add</button>
+
       </div>
-      <div id="heldup-log" style="margin-top:10px"></div>
+      <!-- Tackle % -->
+      <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:12px;color:var(--text3);font-family:var(--font-display);letter-spacing:1px;text-transform:uppercase">Tackle Success</span>
+        <span style="font-family:var(--font-display);font-size:16px;font-weight:900;color:var(--accent)" id="sp-tackles-pct">—</span>
+      </div>
     </div>
 
     <!-- Scrums -->
@@ -1198,23 +1189,23 @@
             </div>
           </div>
         </div>
-        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
+        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border);min-width:0;overflow:hidden">
           <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Their Ball</div>
-          <div style="display:flex;justify-content:space-around">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
             <div style="text-align:center">
-              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;font-weight:700">LOST</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','theirLost',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-scrums-theirLost">0</span>
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','theirLost',1)">+</button>
+              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">LOST</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
+                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirLost',-1)">−</button>
+                <span class="counter-val" style="font-size:18px" id="sp-scrums-theirLost">0</span>
+                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirLost',1)">+</button>
               </div>
             </div>
             <div style="text-align:center">
-              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;font-weight:700">STOLEN</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','theirStolen',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-scrums-theirStolen">0</span>
-                <button class="counter-btn accent" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('scrums','theirStolen',1)">+</button>
+              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">STOLEN</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
+                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirStolen',-1)">−</button>
+                <span class="counter-val" style="font-size:18px" id="sp-scrums-theirStolen">0</span>
+                <button class="counter-btn accent" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('scrums','theirStolen',1)">+</button>
               </div>
             </div>
           </div>
@@ -1250,23 +1241,23 @@
             </div>
           </div>
         </div>
-        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border)">
+        <div style="background:var(--surface2);border-radius:6px;padding:8px;border:1px solid var(--border);min-width:0;overflow:hidden">
           <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px">Their Ball</div>
-          <div style="display:flex;justify-content:space-around">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
             <div style="text-align:center">
-              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1px;font-weight:700">LOST</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','theirLost',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-lineouts-theirLost">0</span>
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','theirLost',1)">+</button>
+              <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">LOST</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
+                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirLost',-1)">−</button>
+                <span class="counter-val" style="font-size:18px" id="sp-lineouts-theirLost">0</span>
+                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirLost',1)">+</button>
               </div>
             </div>
             <div style="text-align:center">
-              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1px;font-weight:700">STOLEN</div>
-              <div style="display:flex;align-items:center;gap:5px;margin-top:3px">
-                <button class="counter-btn" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','theirStolen',-1)">−</button>
-                <span class="counter-val" style="font-size:20px" id="sp-lineouts-theirStolen">0</span>
-                <button class="counter-btn accent" style="width:26px;height:26px;font-size:16px" onclick="adjustSetPiece('lineouts','theirStolen',1)">+</button>
+              <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:0.5px;font-weight:700">STOLEN</div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:4px;margin-top:3px">
+                <button class="counter-btn" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirStolen',-1)">−</button>
+                <span class="counter-val" style="font-size:18px" id="sp-lineouts-theirStolen">0</span>
+                <button class="counter-btn accent" style="width:24px;height:24px;font-size:15px" onclick="adjustSetPiece('lineouts','theirStolen',1)">+</button>
               </div>
             </div>
           </div>
@@ -2109,73 +2100,22 @@ function deletePenalty(id) {
   renderSetPieces();
 }
 
-// ── Generic event tracking (mauls, kicks, turnovers, heldUp) ──
-const EVENT_CONFIG = {
-  mauls:     { selectId: 'maul-player-select',     logId: 'maul-log',     label: 'Maul',     color: 'var(--blue)'   },
-  kicks:     { selectId: 'kick-player-select',     logId: 'kick-log',     label: 'Kick',     color: 'var(--orange)' },
-  turnovers: { selectId: 'turnover-player-select', logId: 'turnover-log', label: 'Turnover', color: 'var(--accent)'  },
-  heldUp:    { selectId: 'heldup-player-select',   logId: 'heldup-log',   label: 'Held Up',  color: 'var(--red)'    },
-};
-
-function populateEventSelects() {
-  const opts = state.players.length
-    ? state.players.map(p => `<option value="${p.id}">${p.num !== '—' ? '#'+p.num+' ' : ''}${p.first} ${p.last}</option>`).join('')
-    : '<option value="">No players</option>';
-  Object.values(EVENT_CONFIG).forEach(cfg => {
-    const el = document.getElementById(cfg.selectId);
-    if (el) el.innerHTML = opts;
-  });
-}
-
-function addEvent(type) {
+function addSimpleEvent(type) {
   const m = getCurrentMatch();
   if (!m) return;
-  const cfg = EVENT_CONFIG[type];
-  const playerId = parseInt(document.getElementById(cfg.selectId).value) || null;
   const data = getSetPieceData(m);
   if (!data[type]) data[type] = [];
-  data[type].push({ id: Date.now(), playerId, half: currentSetPieceHalf });
+  data[type].push({ id: Date.now(), half: currentSetPieceHalf });
   saveState();
   renderSetPieces();
 }
-
-function deleteEvent(type, id) {
+function removeSimpleEvent(type) {
   const m = getCurrentMatch();
-  if (!m || !m.setPieces) return;
-  [1,2].forEach(h => {
-    const d = m.setPieces[h];
-    if (d && d[type]) d[type] = d[type].filter(e => e.id !== id);
-  });
+  if (!m) return;
+  const data = getSetPieceData(m);
+  if (data[type] && data[type].length > 0) data[type].pop();
   saveState();
   renderSetPieces();
-}
-
-function renderEvents(data) {
-  Object.entries(EVENT_CONFIG).forEach(([type, cfg]) => {
-    const el = document.getElementById(cfg.logId);
-    if (!el) return;
-    const events = data[type] || [];
-    if (!events.length) {
-      el.innerHTML = `<div style="color:var(--text3);font-size:13px;padding:4px 0">None recorded this half.</div>`;
-      return;
-    }
-    // Group by player
-    const playerCounts = {};
-    events.forEach(e => {
-      const key = e.playerId || 'unknown';
-      playerCounts[key] = (playerCounts[key] || 0) + 1;
-    });
-    el.innerHTML = Object.entries(playerCounts).map(([pid, count]) => {
-      const player = state.players.find(p => p.id === parseInt(pid));
-      const name = player ? `${player.first} ${player.last}` : 'Unknown';
-      const lastId = [...events].reverse().find(e => (e.playerId||'unknown').toString() === pid)?.id;
-      return `<div class="penalty-item">
-        <span style="flex:1;font-weight:500">${name}</span>
-        <span style="font-family:var(--font-display);font-size:16px;font-weight:900;color:${cfg.color}">×${count}</span>
-        <button class="note-del" onclick="deleteEvent('${type}',${lastId})" title="Remove one">−1</button>
-      </div>`;
-    }).join('');
-  });
 }
 
 function renderSetPieces() {
@@ -2237,7 +2177,13 @@ function renderSetPieces() {
     </div>`;
   }).join('');
   renderPenaltyMap(data.penalties);
-  renderEvents(data);
+
+  // Simple event counters
+  const sv2 = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+  sv2('sp-mauls-count',    (data.mauls    ||[]).length);
+  sv2('sp-kicks-count',    (data.kicks    ||[]).length);
+  sv2('sp-turnovers-count',(data.turnovers||[]).length);
+  sv2('sp-heldup-count',   (data.heldUp   ||[]).length);
 }
 function setNoteType(t) {
   state.currentNoteType = t;
@@ -2497,7 +2443,6 @@ function renderMatchPage() {
   renderMatchRoster();
   renderScoreLog();
   renderSetPieces();
-  populateEventSelects();
 }
 
 // ============ STATS ============
