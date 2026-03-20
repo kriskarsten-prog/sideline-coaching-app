@@ -1015,6 +1015,14 @@
     <div class="match-header">
       <div class="card-label" style="text-align:center" id="match-vs-label">vs Opponent</div>
       <div class="match-score" id="match-score-display">0 — 0</div>
+      <!-- Timer -->
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px">
+        <div id="match-timer-display" style="font-family:var(--font-display);font-size:32px;font-weight:900;letter-spacing:3px;color:var(--text);line-height:1;min-width:80px;text-align:center">00:00</div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <button id="timer-toggle-btn" class="btn" style="padding:6px 14px;font-size:12px;letter-spacing:1px" onclick="toggleTimer()">▶ Start</button>
+          <button class="btn secondary sm" onclick="resetTimer()" style="font-size:10px;padding:4px 10px">Reset</button>
+        </div>
+      </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px">
         <button class="score-btn try-btn" onclick="openScoreModal('try')">
           <span class="score-btn-pts">+5</span>
@@ -1051,6 +1059,14 @@
         </div>
       </div>
     </div>
+
+    <!-- Subs Section (moved here, right after roster) -->
+    <div class="sec-head" style="margin-bottom:10px">
+      <h2 style="font-size:18px">Substitutions</h2>
+      <button class="btn sm" onclick="openModal('modal-add-sub')">+ Sub</button>
+    </div>
+    <div id="subs-list"></div>
+    <div class="divider"></div>
 
     <!-- Notes Section -->
     <div class="half-tabs">
@@ -1095,8 +1111,9 @@
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
           <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Tackles Made</div>
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="sp-tackles-made">0</div>
+          <select id="ev-player-tackles-made" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','made',1)">+</button>
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','made',1,'ev-player-tackles-made')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="adjustSetPiece('tackles','made',-1)">−</button>
           </div>
         </div>
@@ -1105,8 +1122,9 @@
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
           <div style="font-size:10px;color:var(--red);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Tackles Missed</div>
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--red);line-height:1" id="sp-tackles-missed">0</div>
+          <select id="ev-player-tackles-missed" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn danger" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','missed',1)">+</button>
+            <button class="btn danger" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="adjustSetPiece('tackles','missed',1,'ev-player-tackles-missed')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="adjustSetPiece('tackles','missed',-1)">−</button>
           </div>
         </div>
@@ -1115,8 +1133,9 @@
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
           <div style="font-size:10px;color:var(--blue);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Maul Formed</div>
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--blue);line-height:1" id="sp-mauls-count">0</div>
+          <select id="ev-player-mauls" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--blue);border-color:var(--blue)" onclick="addSimpleEvent('mauls')">+</button>
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--blue);border-color:var(--blue)" onclick="addSimpleEvent('mauls','ev-player-mauls')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('mauls')">−</button>
           </div>
         </div>
@@ -1125,8 +1144,9 @@
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
           <div style="font-size:10px;color:var(--orange);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Open Play Kick</div>
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--orange);line-height:1" id="sp-kicks-count">0</div>
+          <select id="ev-player-kicks" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--orange);border-color:var(--orange);color:#0f0f0f" onclick="addSimpleEvent('kicks')">+</button>
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--orange);border-color:var(--orange);color:#0f0f0f" onclick="addSimpleEvent('kicks','ev-player-kicks')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('kicks')">−</button>
           </div>
         </div>
@@ -1135,8 +1155,9 @@
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
           <div style="font-size:10px;color:var(--accent);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Turnover Created</div>
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--accent);line-height:1" id="sp-turnovers-count">0</div>
+          <select id="ev-player-turnovers" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="addSimpleEvent('turnovers')">+</button>
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900" onclick="addSimpleEvent('turnovers','ev-player-turnovers')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('turnovers')">−</button>
           </div>
         </div>
@@ -1145,8 +1166,9 @@
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;flex-direction:column;align-items:center;gap:6px">
           <div style="font-size:10px;color:var(--text2);font-family:var(--font-display);letter-spacing:1.5px;text-transform:uppercase;font-weight:700">Ball Held Up</div>
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--text);line-height:1" id="sp-heldup-count">0</div>
+          <select id="ev-player-heldUp" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn secondary" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;border-color:var(--text2);color:var(--text)" onclick="addSimpleEvent('heldUp')">+</button>
+            <button class="btn secondary" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;border-color:var(--text2);color:var(--text)" onclick="addSimpleEvent('heldUp','ev-player-heldUp')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('heldUp')">−</button>
           </div>
         </div>
@@ -1350,17 +1372,6 @@
       <!-- Legend -->
       <div id="penalty-map-legend" style="margin-top:8px;display:flex;flex-wrap:wrap;gap:6px"></div>
     </div>
-
-    <div class="divider"></div>
-
-    <!-- Subs Section -->
-    <div class="sec-head" style="margin-bottom:10px">
-      <h2 style="font-size:18px">Substitutions</h2>
-      <button class="btn sm" onclick="openModal('modal-add-sub')">+ Sub</button>
-    </div>
-    <div id="subs-list"></div>
-
-    <div class="divider"></div>
 
     <!-- End Match -->
     <div id="end-match-section">
@@ -1622,7 +1633,11 @@ function showPage(name) {
 
 // ============ MODAL ============
 function openModal(id) {
-  if (id === 'modal-add-sub') populateSubSelects();
+  if (id === 'modal-add-sub') {
+    populateSubSelects();
+    const minEl = document.getElementById('sub-min');
+    if (minEl && !minEl.value) { const m = getTimerMinute(); if (m) minEl.value = m; }
+  }
   if (id === 'modal-end-match') {
     const m = getCurrentMatch();
     if (m) {
@@ -1927,6 +1942,41 @@ function switchHalf(h) {
   renderNotes();
 }
 
+// ============ TIMER ============
+let timerInterval = null;
+let timerSeconds = 0;
+let timerRunning = false;
+
+function toggleTimer() {
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+    document.getElementById('timer-toggle-btn').textContent = '▶ Start';
+    document.getElementById('timer-toggle-btn').classList.remove('danger');
+  } else {
+    timerInterval = setInterval(() => { timerSeconds++; updateTimerDisplay(); }, 1000);
+    timerRunning = true;
+    document.getElementById('timer-toggle-btn').textContent = '⏸ Stop';
+    document.getElementById('timer-toggle-btn').classList.add('danger');
+  }
+}
+function resetTimer() {
+  if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
+  timerSeconds = 0;
+  updateTimerDisplay();
+  const btn = document.getElementById('timer-toggle-btn');
+  if (btn) { btn.textContent = '▶ Start'; btn.classList.remove('danger'); }
+}
+function updateTimerDisplay() {
+  const el = document.getElementById('match-timer-display');
+  if (!el) return;
+  const m = Math.floor(timerSeconds / 60);
+  const s = timerSeconds % 60;
+  el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  el.style.color = m >= 50 ? 'var(--red)' : m >= 40 ? 'var(--orange)' : 'var(--text)';
+}
+function getTimerMinute() { return Math.floor(timerSeconds / 60) || null; }
+
 // ============ SET PIECES ============
 let currentSetPieceHalf = 1;
 
@@ -1974,11 +2024,21 @@ function getSetPieceData(m) {
   return m.setPieces[currentSetPieceHalf];
 }
 
-function adjustSetPiece(type, outcome, delta) {
+function adjustSetPiece(type, outcome, delta, playerSelectId) {
   const m = getCurrentMatch();
   if (!m) return;
   const data = getSetPieceData(m);
   data[type][outcome] = Math.max(0, (data[type][outcome] || 0) + delta);
+  // Record player attribution if incrementing and a player select is provided
+  if (delta > 0 && playerSelectId) {
+    const sel = document.getElementById(playerSelectId);
+    const playerId = sel ? parseInt(sel.value) || null : null;
+    if (playerId) {
+      const key = type + '_' + outcome + '_players';
+      if (!data[key]) data[key] = [];
+      data[key].push({ playerId, minute: getTimerMinute(), ts: Date.now() });
+    }
+  }
   saveState();
   renderSetPieces();
 }
@@ -2102,12 +2162,19 @@ function deletePenalty(id) {
   renderSetPieces();
 }
 
-function addSimpleEvent(type) {
+function addSimpleEvent(type, playerSelectId) {
   const m = getCurrentMatch();
   if (!m) return;
   const data = getSetPieceData(m);
   if (!data[type]) data[type] = [];
-  data[type].push({ id: Date.now(), half: currentSetPieceHalf });
+  const entry = { id: Date.now(), half: currentSetPieceHalf, minute: getTimerMinute() };
+  // Optional player attribution
+  if (playerSelectId) {
+    const sel = document.getElementById(playerSelectId);
+    const playerId = sel ? parseInt(sel.value) || null : null;
+    if (playerId) entry.playerId = playerId;
+  }
+  data[type].push(entry);
   saveState();
   renderSetPieces();
 }
@@ -2186,6 +2253,13 @@ function renderSetPieces() {
   sv2('sp-kicks-count',    (data.kicks    ||[]).length);
   sv2('sp-turnovers-count',(data.turnovers||[]).length);
   sv2('sp-heldup-count',   (data.heldUp   ||[]).length);
+}
+function populateEventPlayerSelects() {
+  const ids = ['ev-player-tackles-made','ev-player-tackles-missed','ev-player-mauls','ev-player-kicks','ev-player-turnovers','ev-player-heldUp'];
+  const opts = '<option value="">Player (opt.)</option>' + state.players.map(p =>
+    '<option value="' + p.id + '">' + (p.num !== '—' ? '#'+p.num+' ' : '') + p.first + ' ' + p.last + '</option>'
+  ).join('');
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.innerHTML = opts; });
 }
 function setNoteType(t) {
   state.currentNoteType = t;
@@ -2445,6 +2519,7 @@ function renderMatchPage() {
   renderMatchRoster();
   renderScoreLog();
   renderSetPieces();
+  populateEventPlayerSelects();
 }
 
 // ============ STATS ============
