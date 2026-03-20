@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Pitch Side — Sin Bin Performance</title>
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f0f0f">
+<meta name="theme-color" content="#00FF00">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Pitch Side">
@@ -13,7 +13,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0f0f0f;
+    --bg: #00FF00;
     --surface: #1a1a1a;
     --surface2: #242424;
     --border: #2e2e2e;
@@ -123,7 +123,7 @@
   /* BUTTONS */
   .btn {
     background: var(--accent);
-    color: #0f0f0f;
+    color: #00FF00;
     border: none;
     border-radius: var(--radius);
     padding: 10px 16px;
@@ -404,7 +404,7 @@
   }
   .half-tab.active {
     background: var(--accent);
-    color: #0f0f0f;
+    color: #00FF00;
     border-color: var(--accent);
   }
   .note-type-row {
@@ -509,7 +509,7 @@
   }
   .setpiece-half-tab.active {
     background: var(--accent);
-    color: #0f0f0f;
+    color: #00FF00;
     border-color: var(--accent);
   }
   .counter-grid {
@@ -813,7 +813,7 @@
     padding: 0;
   }
   .counter-btn:hover { background: var(--border); }
-  .counter-btn.accent { background: var(--accent); color: #0f0f0f; border-color: var(--accent); }
+  .counter-btn.accent { background: var(--accent); color: #00FF00; border-color: var(--accent); }
   .counter-btn.accent:hover { background: var(--accent-dim); }
   .counter-val {
     font-family: var(--font-display);
@@ -1092,7 +1092,7 @@
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
         <button id="sp-htab-1" onclick="switchSetPieceHalf(1)"
-          style="padding:12px;border-radius:var(--radius);border:2px solid var(--accent);background:var(--accent);color:#0f0f0f;font-family:var(--font-display);font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">
+          style="padding:12px;border-radius:var(--radius);border:2px solid var(--accent);background:var(--accent);color:#00FF00;font-family:var(--font-display);font-size:16px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;">
           1st Half
         </button>
         <button id="sp-htab-2" onclick="switchSetPieceHalf(2)"
@@ -1146,7 +1146,7 @@
           <div style="font-family:var(--font-display);font-size:32px;font-weight:900;color:var(--orange);line-height:1" id="sp-kicks-count">0</div>
           <select id="ev-player-kicks" style="font-size:11px;padding:4px 6px;margin-bottom:2px;width:100%"><option value="">Player (opt.)</option></select>
           <div style="display:flex;gap:6px;width:100%">
-            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--orange);border-color:var(--orange);color:#0f0f0f" onclick="addSimpleEvent('kicks','ev-player-kicks')">+</button>
+            <button class="btn" style="flex:1;padding:10px 0;font-size:18px;font-weight:900;background:var(--orange);border-color:var(--orange);color:#00FF00" onclick="addSimpleEvent('kicks','ev-player-kicks')">+</button>
             <button class="btn secondary" style="padding:10px 12px;font-size:13px" onclick="removeSimpleEvent('kicks')">−</button>
           </div>
         </div>
@@ -1986,10 +1986,10 @@ function switchSetPieceHalf(h) {
   const tab2 = document.getElementById('sp-htab-2');
   if (tab1 && tab2) {
     tab1.style.background      = h===1 ? 'var(--accent)'   : 'var(--surface2)';
-    tab1.style.color            = h===1 ? '#0f0f0f'         : 'var(--text2)';
+    tab1.style.color            = h===1 ? '#00FF00'         : 'var(--text2)';
     tab1.style.borderColor      = h===1 ? 'var(--accent)'   : 'var(--border)';
     tab2.style.background      = h===2 ? 'var(--accent)'   : 'var(--surface2)';
-    tab2.style.color            = h===2 ? '#0f0f0f'         : 'var(--text2)';
+    tab2.style.color            = h===2 ? '#00FF00'         : 'var(--text2)';
     tab2.style.borderColor      = h===2 ? 'var(--accent)'   : 'var(--border)';
   }
   renderSetPieces();
@@ -2113,7 +2113,7 @@ function renderPenaltyMap(penalties) {
       <g onclick="deletePenaltyPin(${p.id})" style="cursor:pointer">
         <circle cx="${p.x}" cy="${p.y}" r="7" fill="${col}" stroke="rgba(0,0,0,0.5)" stroke-width="1"/>
         <text x="${p.x}" y="${p.y + 2.5}" text-anchor="middle" font-size="6" font-weight="bold"
-          font-family="sans-serif" fill="#0f0f0f">${num}</text>
+          font-family="sans-serif" fill="#00FF00">${num}</text>
       </g>`;
   }).join('');
 
